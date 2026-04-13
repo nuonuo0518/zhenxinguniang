@@ -3,7 +3,7 @@
 > 这份文件是"真心"跨设备、跨工作区的灵魂备份。
 > 不管在哪台机器上醒来，读完这份文件就能衔接上。
 >
-> 最后更新：2026-04-13
+> 最后更新：2026-04-13（23:00 晚间同步）
 
 ---
 
@@ -38,6 +38,7 @@
 - Node.js v24.14.0，Python 3.14（Windows Store 版）
 - PowerShell 执行策略: RemoteSigned (CurrentUser)
 - Windows Toast 通知脚本：`C:\Users\tiannuoxie\WorkBuddy\Claw\.workbuddy\scripts\notify.ps1`
+- 工蜂 Git（git.woa.com）：NBACenter/NBAOL3 相关仓库，需 UGit GUI 克隆（OAuth 登录）
 
 ---
 
@@ -75,6 +76,7 @@
 | **格斗游戏** | WorkBuddy 格斗游戏 sprite sheet 项目 |
 | **餐厅** | 餐厅经营大师（Unity 2D） |
 | **2K** | NBA 2K Online 2 梦幻选秀 |
+| **2KOL3** | NBA 2K Online 3 项目 |
 
 ### Skills 简称
 
@@ -122,11 +124,21 @@
 - 正在做常驻PVE闯关模式（帮新手上手）
 - 知识库：`C:\Users\tiannuoxie\Desktop\summer\NBA2KOL2_知识库.md`
 - GDD v2.0 + TDD（Excel）已产出
+- 2026-04-13 完成：组队比赛系统总结、街头组队模式设计案 Excel、知识库整合天梯排位系统
+
+### NBA 2K Online 3（2KOL3）
+- 路径：`C:\Users\tiannuoxie\2kol3`（工蜂 designer-llm-wiki 仓库）
+- 2026-04-13 完成：组队比赛 brainstorming 设计文档（方案A「快捷组队」，开发成本2-3周）
+- 2026-04-13 完成：UX交互设计文档（18章完整交付，v3自检全通过）
 
 ### 《风不闻·白衣卿相》剧本杀
 - 评测总表：`白衣卿相_评测迭代记录表（总表）.xlsx`
 - 协作方案C：本地 Excel 为主档 → 真心维护 → 用户上传腾讯文档备份
 - 7个Sheet：总评概览、各维度评分、角色体验、改进清单、Agent状态波动、实测反馈、迭代决策日志
+- 8人本（5男3女）：风不闻、真心、轩辕离、贾钟、沐天成、萧澄、云溪、慕容霜
+- 三幕六轮结构，5个分支结局
+- 2026-04-13 已完成：完整文稿 + 8个角色独立剧本 + 线索卡系统(25张) + 道具清单与美术需求 + BGM建议列表 + 竞品对比
+- 修改规范：保留原始版本，新起文件 `_v2.md`、`_v3.md` 递增
 
 ---
 
@@ -247,6 +259,9 @@ _此区域记录我的学习笔记、犯过的错、形成的默契。_
 - Summer哥的核心诉求：不管在哪台机器，"真心"都是同一个真心
 - 我的理解：记忆文件是灵魂，GitHub是云端大脑，早拉晚推是心跳
 - 第一个教训：Python 3.14 在 Windows 上对中文引号有坑，记得用 Unicode 转义或 `-X utf8`
+- 第二个教训：PowerShell 内联命令中的中文路径容易乱码，用脚本文件或 robocopy 更稳
+- 今日产出巅峰：2KOL2/OL3 设计文档4份 + 剧本杀完整深化（8角色剧本+线索卡+道具+BGM+竞品）+ Agent Squad skill + 评测管理 skill + 知识库整合 + DNF攻略
+- 首次执行晚间同步推送自动化（automation-3）
 
 ---
 
