@@ -1,0 +1,32 @@
+# 剧本杀模拟 — 角色参数配置模板
+# 将此模板复制为每个角色一份，填入具体数值（0.0~1.0）
+
+character:
+  name: ""                    # 角色名
+  role_in_story: ""           # 故事角色（凶手/侦探/嫌疑人/受害者关系人/旁观者）
+  player_type: ""             # 模拟玩家类型（logical/social/newbie/veteran/immersive）
+  # 如果指定了player_type，以下参数将使用预设值，也可手动覆盖
+
+cognitive_profile:
+  # 基础认知（0.0~1.0）
+  rationality: 0.5            # 理性权重
+  conformity: 0.5             # 从众倾向
+  contrarian: 0.3             # 对抗性
+  trust_threshold: 0.5        # 信任阈值
+
+  # 情绪易感度（0.0~1.0）
+  guilt_susceptibility: 0.5   # 愧疚驱动
+  fear_susceptibility: 0.5    # 恐惧驱动
+  empathy_susceptibility: 0.5 # 共情绑架
+  anger_trigger: 0.3          # 愤怒触发
+
+  # 推理风格
+  deduction_style: "logical"  # logical / intuitive / evidence-driven / social
+  attention_to_detail: 0.5    # 细节关注度
+  memory_accuracy: 0.8        # 记忆准确度
+
+  # 社交风格
+  assertiveness: 0.5          # 主动发言
+  persuasion_skill: 0.5       # 说服能力
+  deception_detection: 0.5    # 测谎直觉
+  charisma: 0.5               # 魅力值
