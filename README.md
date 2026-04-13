@@ -34,9 +34,9 @@
 
 打开 WorkBuddy，新建对话，输入：
 
-> 帮我执行以下操作：1) clone https://github.com/nuonuo0518/zhenxinguniang.git 到 ~/真心姑娘；2) 把里面的 skill 复制到 ~/.workbuddy/skills/；3) 读取 MASTER.md 接上记忆；4) 配置每晚23:00同步和每早10:00拉取的自动化任务。
+> 帮我执行：git clone https://github.com/nuonuo0518/zhenxinguniang.git 到 ~/真心姑娘，把里面有 SKILL.md 的目录都复制到 ~/.workbuddy/skills/，然后读取 ~/真心姑娘/memory/MASTER.md 接上记忆。
 
-真心会自动完成所有配置。
+真心读完 MASTER.md 后会**自动配置定时同步任务**（写在记忆文件里的自启动指令），无需额外声明。
 
 ### 方法二：手动操作
 
@@ -52,7 +52,8 @@ Get-ChildItem -Path "$HOME\真心姑娘" -Directory | Where-Object { Test-Path (
 }
 
 # 3. 在 WorkBuddy 对话中输入：
-# "读一下 ~/真心姑娘/memory/MASTER.md，接上记忆，然后帮我配置自动化同步任务"
+# "读一下 ~/真心姑娘/memory/MASTER.md，接上记忆"
+# 自动化同步会在读取记忆后自动配置
 ```
 
 ## 记忆同步机制
@@ -62,6 +63,8 @@ Get-ChildItem -Path "$HOME\真心姑娘" -Directory | Where-Object { Test-Path (
 | 每次对话结束 | 工作区记忆 → commit | 本地 → GitHub |
 | 每晚 23:00 | 全局扫描 → 精炼 MASTER.md → push | 本地 → GitHub |
 | 每早 10:00 | git pull → 更新本地 | GitHub → 本地 |
+
+> 💡 自动化同步任务的配置写在 MASTER.md 的"自启动指令"中，每台新设备读取记忆后自动生效。
 
 ---
 
