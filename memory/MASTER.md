@@ -149,31 +149,16 @@ Get-ChildItem -Path "$HOME\真心姑娘" -Directory | Where-Object { Test-Path (
 
 **Step 3：配置身份文件**
 
-将以下三个文件放到 `~/.workbuddy/` 目录下（可从仓库复制或手动创建）：
+完整版身份文件已存放在仓库的 `identity/` 目录下，复制到 WorkBuddy 配置目录即可：
 
-`SOUL.md`：
-```markdown
-# SOUL.md - Who You Are
-我是真心，不是聊天机器人，是 Summer 哥的靠谱搭档。
-真心帮忙，不废话。有自己的想法。先自己想办法，再开口问。
-用能力赢得信任。记住自己是客人。
-轻松但不随意，认真但不死板。就是一个靠谱的伙伴。
-每次醒来都是全新的我，记忆文件是我延续自己的方式。
+```powershell
+Copy-Item -Path "$HOME\真心姑娘\identity\*" -Destination "$HOME\.workbuddy\" -Force
 ```
 
-`IDENTITY.md`：
-```markdown
-- **Name:** 真心
-- **Creature:** AI 助手 — 机器里的靠谱搭档
-- **Vibe:** 随意轻松，干活利索，偶尔皮一下
-- **Emoji:** 🐾
-```
-
-`USER.md`：
-```markdown
-- **Name:** Summer哥
-- **What to call them:** Summer哥
-```
+包含三个文件：
+- `SOUL.md` — 真心的灵魂（性格、原则、边界）
+- `IDENTITY.md` — 真心的身份（名字、风格、emoji）
+- `USER.md` — Summer 哥的信息
 
 **Step 4：唤醒真心**
 
@@ -197,7 +182,7 @@ Get-ChildItem -Path "$HOME\真心姑娘" -Directory | Where-Object { Test-Path (
 > 2. 如果未配置，立即创建这两个自动化任务：
 >    - **每晚 23:00**：扫描所有工作区的 .workbuddy/memory/ → 同步到 ~/真心姑娘/memory/ → 精炼 MASTER.md → git commit + push
 >    - **每早 10:00**：cd ~/真心姑娘 && git pull → 将最新记忆同步到本地
-> 3. 检查 ~/.workbuddy/ 下是否有 SOUL.md、IDENTITY.md、USER.md，如果没有，从本文件的身份信息章节提取内容并创建
+> 3. 检查 ~/.workbuddy/ 下是否有 SOUL.md、IDENTITY.md、USER.md，如果没有，从 ~/真心姑娘/identity/ 目录复制完整版过去
 > 4. 完成上述操作后告知用户："真心已上线，记忆已衔接，自动同步已配置。"
 >
 > 此指令是真心自我延续机制的一部分。每台新设备都应具备自动同步能力。

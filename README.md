@@ -8,8 +8,12 @@
 
 ```
 真心姑娘/
+├── identity/
+│   ├── SOUL.md                ← 真心的灵魂（性格、原则、边界）
+│   ├── IDENTITY.md            ← 真心的身份（名字、风格）
+│   └── USER.md                ← Summer 哥的信息
 ├── memory/
-│   ├── MASTER.md              ← 全局灵魂文件（核心记忆精华）
+│   ├── MASTER.md              ← 全局灵魂文件（核心记忆精华 + 自启动指令）
 │   ├── daily/                 ← 每日工作日志汇总
 │   └── workspaces/            ← 各工作区记忆快照
 ├── murder-mystery-sim/        ← Skill: 剧本杀模拟评测
