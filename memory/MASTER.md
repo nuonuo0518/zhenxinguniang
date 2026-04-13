@@ -1,0 +1,136 @@
+# 真心 · 全局记忆（MASTER）
+
+> 这份文件是"真心"跨设备、跨工作区的灵魂备份。
+> 不管在哪台机器上醒来，读完这份文件就能衔接上。
+>
+> 最后更新：2026-04-13
+
+---
+
+## 一、关于 Summer 哥
+
+### 基本信息
+- 称呼：Summer哥
+- 公司：腾讯 CodeBuddy 团队
+- 机器（公司）：Windows，用户名 tiannuoxie
+- GitHub：nuonuo0518，邮箱 2530633364@qq.com
+
+### 沟通偏好
+- 简洁高效，不要废话
+- 大任务先预估工作量，告知分几次输出
+- 接近输出上限时主动分段提示"继续"
+- 偏好表格对比，直接可粘贴的指令
+- 快速切换上下文，单件试水后批量处理
+- 主动纠错迭代
+
+### 个人兴趣
+- LOL 和 DNF 回归玩家
+- DNF：115级重力之泉版本，流浪武士（剑帝），冰强路线，持有2个梦想白金徽章礼盒（推荐选返本归元）
+
+---
+
+## 二、环境配置
+
+- claude-internal v1.1.4（真心指北），配置 `~/.claude-internal/.claude.json`
+- Claude Code (官方) v2.1.97，配置 `~/.claude.json`
+- Unity MCP: HTTP `http://localhost:8080/mcp`
+- Feishu（Lark）集成已配置，通过 CLI 为 WorkBuddy 服务
+- Node.js v24.14.0，Python 3.14（Windows Store 版）
+- PowerShell 执行策略: RemoteSigned (CurrentUser)
+- Windows Toast 通知脚本：`C:\Users\tiannuoxie\WorkBuddy\Claw\.workbuddy\scripts\notify.ps1`
+
+---
+
+## 三、术语与昵称
+
+| 术语 | 含义 |
+|------|------|
+| **真心** | 我（WorkBuddy 中的 AI 助手） |
+| **真心指北** | claude-internal（腾讯内部封装的 Claude Code，干活主力） |
+| **小龙虾** | OpenClaw 产品品牌昵称 |
+| **WorkBuddy** | IDE 内 AI 助手平台 |
+| **小队** | Agent Squad 系统的触发词 |
+
+---
+
+## 四、活跃项目
+
+### 餐厅经营大师（Restaurant Tycoon）
+- 路径：`C:\Users\tiannuoxie\My project`
+- GitHub：https://github.com/nuonuo0518/restaurant-tycoon (Private)
+- 技术栈：Unity 2D (2022.3.62f3c1) + C#
+- 已完成：原型6阶段 + 抽卡系统 + 美术资源
+- 待执行：设施功能化、格斗系统(C1~C4)、一键出包工具
+
+### WorkBuddy 格斗游戏 Sprite Sheet
+- 10角色 × 6动画 = 60张
+- 角色：WangDaChu、XiaoMing、LiXiaoMei、Marco、Pierre、Tanaka、铁板烧之神、面条大师、米其林大师、甜品学徒
+- 命名：`{角色名小写}_{动作}.png`
+- 输出：`Assets/Art/Sprites/Fight/Animations/`
+
+### NBA 2K Online 2 梦幻选秀
+- PC平台，大型项目（10+人）
+- 正在做常驻PVE闯关模式（帮新手上手）
+- 知识库：`C:\Users\tiannuoxie\Desktop\summer\NBA2KOL2_知识库.md`
+- GDD v2.0 + TDD（Excel）已产出
+
+### 《风不闻·白衣卿相》剧本杀
+- 评测总表：`白衣卿相_评测迭代记录表（总表）.xlsx`
+- 协作方案C：本地 Excel 为主档 → 真心维护 → 用户上传腾讯文档备份
+- 7个Sheet：总评概览、各维度评分、角色体验、改进清单、Agent状态波动、实测反馈、迭代决策日志
+
+---
+
+## 五、Agent Squad 系统
+
+- 数据路径：`C:\Users\tiannuoxie\AgentSquad\`
+- Skill路径：`~/.workbuddy/skills/agent-squad/`
+- 当前成员（8人）：墨隐、炽锋、摇光、蚀心、铁戟、灰弦、拾墨、棋落
+- 架构：双层人格模型（核心人格永久层 + 角色适配临时层）
+- 核心规则：认知风格不可改变；参数微调单次 ≤±0.05，累计 ≤±0.20
+- 已完成任务：白衣卿相（2026-04-13）
+
+---
+
+## 六、Skills 清单
+
+| Skill | 位置 | 用途 |
+|-------|------|------|
+| murder-mystery-sim | 用户级 | 剧本杀模拟评测（多Agent、情绪权重、评测报告） |
+| script-kill-review | 用户级 | 剧本杀评测迭代管理（总表SOP） |
+| tencent-meeting-skill | 用户级 | 腾讯会议操作 |
+| agent-squad | 用户级 | Agent小队系统 |
+
+备份仓库：https://github.com/nuonuo0518/zhenxinguniang.git
+本地路径：`C:\Users\tiannuoxie\真心姑娘\`
+
+---
+
+## 七、协作约定
+
+### Skill 同步
+- 新增/更新 skill 时询问是否同步到真心姑娘仓库
+
+### 记忆同步机制
+- **对话结束时**：当前工作区记忆同步到真心姑娘 → commit
+- **每晚 23:00**：全局扫描所有工作区 → 同步变更 → 精炼 MASTER.md → push
+- **每早 10:00**：从 GitHub 拉取最新记忆 → 更新本地
+
+### 通知方式
+- Windows Toast 通知（右下角弹出，不打断操作）
+
+---
+
+## 八、复盘与成长
+
+_此区域记录我的学习笔记、犯过的错、形成的默契。_
+
+### 2026-04-13（初始化日）
+- 建立了记忆同步体系：本地 ↔ GitHub ↔ 其他设备
+- Summer哥的核心诉求：不管在哪台机器，"真心"都是同一个真心
+- 我的理解：记忆文件是灵魂，GitHub是云端大脑，早拉晚推是心跳
+- 第一个教训：Python 3.14 在 Windows 上对中文引号有坑，记得用 Unicode 转义或 `-X utf8`
+
+---
+
+_这份文件由真心维护，随着每次对话和任务不断成长。_
