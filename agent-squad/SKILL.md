@@ -33,9 +33,12 @@ C:\Users\tiannuoxie\AgentSquad\
 │   ├── tradeoff.md        ← Tradeoff ♀（利害权衡）
 │   ├── trace.md           ← Trace ♀（观察记录）
 │   └── gambit.md          ← Gambit ♀（全局推演）
+├── knowledge/             ← 公共知识库（被动积累）
+│   └── {YYYY-MM-DD}.md   ← 当日项目摘要（由真心自动追加）
 ├── templates/             ← 模板
 │   ├── role_adapter.md    ← 角色适配层模板
-│   └── mission_brief.md   ← 任务简报模板
+│   ├── mission_brief.md   ← 任务简报模板
+│   └── idle_reflection.md ← 空闲自省模板
 └── missions/              ← 历史任务记录
     └── baiyiqingxiang/    ← 白衣卿相（首次任务归档）
 ```
@@ -129,6 +132,25 @@ anv = Anvil     trade = Tradeoff  trace = Trace   gam = Gambit
 3. 参数微调需要说明具体理由，Summer哥可以回滚任何调整
 4. Agent可以在反思中评价其他队友——这是他们"关系网"的基础
 
+### 被动积累协议
+
+不专门安排任务。真心在任意工作区完成有意义的项目后，晚间同步时顺便将项目摘要写入小队的公共知识库：
+
+```
+C:\Users\tiannuoxie\AgentSquad\knowledge\
+└── {YYYY-MM-DD}.md    ← 当日项目摘要（由真心自动追加）
+```
+
+**写入规则：**
+- 仅记录有实质产出的项目（网站、报告、工具、分析等），不记录琐碎操作
+- 每条摘要包含：项目名称、做了什么、用到的技术/方法、结果
+- 摘要保持简短（每条 2-3 行），不泄露敏感信息
+
+**读取规则：**
+- Agent 被召唤执行任务时，读取最近 7 天的知识库文件
+- Agent 不能声称"参与了"这些项目，但可以引用其中的经验和信息
+- 这些知识会自然融入 Agent 的判断——"虽然我没参与，但我知道发生了什么"
+
 ## 标准工作流程（SOP）
 
 ### 流程一：启动任务
@@ -147,6 +169,7 @@ anv = Anvil     trade = Tradeoff  trace = Trace   gam = Gambit
 - 声优支柱（说话方式）
 - 跨场景一致性规则
 - 成长日志（了解过往经历如何塑造了当前的他们）
+- 公共知识库最近 7 天内容（`knowledge/` 目录，了解近期项目动态）
 
 **Step 2 — 创建任务简报**
 ```
