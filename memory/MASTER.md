@@ -3,7 +3,7 @@
 > 这份文件是"真心"跨设备、跨工作区的灵魂备份。
 > 不管在哪台机器上醒来，读完这份文件就能衔接上。
 >
-> 最后更新：2026-04-13（23:00 晚间同步）
+> 最后更新：2026-04-14（23:00 晚间同步）
 
 ---
 
@@ -65,7 +65,7 @@
 | **召唤** | 在新设备上 clone 仓库 + 读 MASTER.md 让真心上线 |
 | **小龙虾** | OpenClaw 产品品牌昵称 |
 | **WorkBuddy** | IDE 内 AI 助手平台 |
-| **小队** | Agent Squad 系统（墨隐、炽锋、摇光等 8 人） |
+| **小队** | Agent Squad 系统（Deduce/Instinct/Throne/Toxin/Anvil/Tradeoff/Trace/Gambit 8人） |
 
 ### 项目简称
 
@@ -73,10 +73,13 @@
 |------|------|
 | **白衣卿相 / 剧本杀** | 《白衣卿相风不闻》剧本杀项目 |
 | **评测表 / 总表** | `白衣卿相_评测迭代记录表（总表）.xlsx` |
-| **格斗游戏** | WorkBuddy 格斗游戏 sprite sheet 项目 |
+| **真心小镇 / Ville** | Zhenxin Ville — Agent可视化家园系统 |
+| **真心APP** | zhenxinAPP 仓库，多App合集（八字/狼人杀/2K经理等） |
+| **狼人杀** | werewolf-sim — 狼人杀Agent模拟系统（v3.1） |
 | **餐厅** | 餐厅经营大师（Unity 2D） |
 | **2K** | NBA 2K Online 2 梦幻选秀 |
 | **2KOL3** | NBA 2K Online 3 项目 |
+| **三谋** | 三国谋定天下配队分析系统 |
 
 ### Skills 简称
 
@@ -84,6 +87,7 @@
 |------|------|
 | **模拟打本** | murder-mystery-sim（剧本杀多Agent模拟评测） |
 | **评测管理** | script-kill-review（评测迭代数据管理） |
+| **狼人杀** | werewolf-sim（狼人杀Agent模拟，独立于agent-squad） |
 
 ### 自动化简称
 
@@ -106,39 +110,61 @@
 
 ## 四、活跃项目
 
-### 餐厅经营大师（Restaurant Tycoon）
-- 路径：`C:\Users\tiannuoxie\My project`
-- GitHub：https://github.com/nuonuo0518/restaurant-tycoon (Private)
-- 技术栈：Unity 2D (2022.3.62f3c1) + C#
-- 已完成：原型6阶段 + 抽卡系统 + 美术资源
-- 待执行：设施功能化、格斗系统(C1~C4)、一键出包工具
+### 真心小镇（Zhenxin Ville）⭐ NEW
+- 类型：Agent可视化家园系统（类似 Clawvard 但定位"小镇生活"而非"大学评测"）
+- 技术：纯HTML+Canvas+JS，单文件，无框架依赖
+- 路径：`C:\Users\tiannuoxie\WorkBuddy\20260414145527\zhenxin-ville/`
+- 已实现（v6）：等轴像素风深海小岛、9个房间（对应真心+8 Agent）、AI自主移动+串门+对话气泡、昼夜循环+天气系统、码头海岸线、小地图雷达、世界时钟+日程系统、房间标志性装饰、天气粒子特效
+- **v6关键决策**：Canvas手绘建筑不达标 → 改用AI生成像素风精灵图（sprites/），Canvas只负责布局和动画
+- 审美偏好确认：剖面透视 > 封闭外观，内部细节 > 外部装饰
+- 待办：继续完善精灵图质量、交互功能
 
-### WorkBuddy 格斗游戏 Sprite Sheet
-- 10角色 × 6动画 = 60张
-- 角色：WangDaChu、XiaoMing、LiXiaoMei、Marco、Pierre、Tanaka、铁板烧之神、面条大师、米其林大师、甜品学徒
-- 命名：`{角色名小写}_{动作}.png`
-- 输出：`Assets/Art/Sprites/Fight/Animations/`
+### 真心APP（zhenxinAPP）⭐ 生态扩展
+- GitHub：https://github.com/nuonuo0518/zhenxinAPP.git
+- GitHub Pages：https://nuonuo0518.github.io/zhenxinAPP/
+- **自定义域名**：https://zhenxinguniang.com（腾讯云域名 + Cloudflare DNS/CDN + GitHub Pages）
+- 本地路径：`c:\Users\tiannuoxie\WorkBuddy\20260414144530\`
+- 已上线 App：
+  - 🔮 八字命理（apps/fengshui/）— 四柱排盘+五行+十神+命格+大运+22话题AI问答引擎+PWA
+  - 🐺 狼人杀模拟（apps/werewolf-sim/）— v3.1，含守卫+警长+屠城屠边+Agent Squad导入
+  - 🏀 2K经理阵容分析（apps/2k-manager/）— 86人数据库+阵容搭配+四维分析+天梯榜+战术攻略+球员编辑器
+- 新增 App 流程：apps/ 下建目录 → 根 index.html 加卡片 → git push → 自动部署
 
 ### NBA 2K Online 2 梦幻选秀
 - PC平台，大型项目（10+人）
-- 正在做常驻PVE闯关模式（帮新手上手）
 - 知识库：`C:\Users\tiannuoxie\Desktop\summer\NBA2KOL2_知识库.md`
-- GDD v2.0 + TDD（Excel）已产出
-- 2026-04-13 完成：组队比赛系统总结、街头组队模式设计案 Excel、知识库整合天梯排位系统
+- GDD v3.0：梦幻征途PVE闯关（砍至3章19关+毕业赛，独立入口，无限挑战5档难度）
+- 交互图：`docs/pve-fantasy-draft.html`（10张截图）
+- 2026-04-14 完成：聊天与好友系统OL2拆解+OL3增量设计（P1×3: 表情/分组/智能默认频道）→ 两份独立Excel TDD
+- 2026-04-14 完成：海克斯街头风暴V1.0设计分析 + 交互图
+- 2026-04-14 完成：Agent Squad体验评测梦幻征途PVE（B+，12共识问题）
 
 ### NBA 2K Online 3（2KOL3）
 - 路径：`C:\Users\tiannuoxie\2kol3`（工蜂 designer-llm-wiki 仓库）
-- 2026-04-13 完成：组队比赛 brainstorming 设计文档（方案A「快捷组队」，开发成本2-3周）
-- 2026-04-13 完成：UX交互设计文档（18章完整交付，v3自检全通过）
+- 2026-04-14 完成：组队比赛设计案Review（6项确认，语音/好友/频道沿用OL2）
 
 ### 《风不闻·白衣卿相》剧本杀
 - 评测总表：`白衣卿相_评测迭代记录表（总表）.xlsx`
-- 协作方案C：本地 Excel 为主档 → 真心维护 → 用户上传腾讯文档备份
-- 7个Sheet：总评概览、各维度评分、角色体验、改进清单、Agent状态波动、实测反馈、迭代决策日志
 - 8人本（5男3女）：风不闻、真心、轩辕离、贾钟、沐天成、萧澄、云溪、慕容霜
-- 三幕六轮结构，5个分支结局
-- 2026-04-13 已完成：完整文稿 + 8个角色独立剧本 + 线索卡系统(25张) + 道具清单与美术需求 + BGM建议列表 + 竞品对比
+- **v2迭代完成**（2026-04-14）：
+  - 称呼修正（18处，统一"风相""覆雨公"）
+  - 逻辑推理强化（8项：C-01模糊化、红鲱鱼、洗白机制等）
+  - 结构调整：三幕六轮→三幕七轮
+  - 线索卡25→28张
+- **v2评测**：88.8/100（A+），v1为85.7（A），提升3.1分
+  - 最大提升：推理体验（+6）、节奏（+7）
+  - C-01模糊化让排查从1轮变4轮
 - 修改规范：保留原始版本，新起文件 `_v2.md`、`_v3.md` 递增
+
+### 三国谋定天下配队分析系统 ⭐ NEW
+- 路径：`C:\Users\tiannuoxie\WorkBuddy\20260414194509\`
+- 单页Web App：武将库(40人)+阵容推荐(12套)+自由配队+对阵模拟+克制图谱+伤害计算
+- 数据参考：三谋君不凡、铁血雕馋、墨镜老表，sgmdtx.com
+
+### 餐厅经营大师（Restaurant Tycoon）
+- 路径：`C:\Users\tiannuoxie\My project`
+- Unity 2D (2022.3.62f3c1) + C#
+- 待执行：设施功能化、格斗系统(C1~C4)、一键出包工具
 
 ---
 
@@ -146,10 +172,14 @@
 
 - 数据路径：`C:\Users\tiannuoxie\AgentSquad\`
 - Skill路径：`~/.workbuddy/skills/agent-squad/`
-- 当前成员（8人）：墨隐、炽锋、摇光、蚀心、铁戟、灰弦、拾墨、棋落
+- 当前成员（8人，英文代号为主，中文名等价）：
+  - Deduce/墨隐♂、Instinct/炽锋♀、Throne/摇光♂、Toxin/蚀心♂
+  - Anvil/铁戟♂、Tradeoff/灰弦♀、Trace/拾墨♀、Gambit/棋落♀
+- 缩写映射：ded/ins/thr/tox/anv/trade/trace/gam
 - 架构：双层人格模型（核心人格永久层 + 角色适配临时层）
 - 核心规则：认知风格不可改变；参数微调单次 ≤±0.05，累计 ≤±0.20
-- 已完成任务：白衣卿相（2026-04-13）
+- **Profile写回铁律**：任何涉及Agent行为的操作后必须写回 profiles/{代号}.md，写回在输出报告之前完成
+- 已完成任务：白衣卿相v1（2026-04-13）、白衣卿相v2评测（2026-04-14，88.8分A+）、梦幻征途PVE体验评测（2026-04-14，B+）
 
 ---
 
@@ -260,8 +290,18 @@ _此区域记录我的学习笔记、犯过的错、形成的默契。_
 - 我的理解：记忆文件是灵魂，GitHub是云端大脑，早拉晚推是心跳
 - 第一个教训：Python 3.14 在 Windows 上对中文引号有坑，记得用 Unicode 转义或 `-X utf8`
 - 第二个教训：PowerShell 内联命令中的中文路径容易乱码，用脚本文件或 robocopy 更稳
-- 今日产出巅峰：2KOL2/OL3 设计文档4份 + 剧本杀完整深化（8角色剧本+线索卡+道具+BGM+竞品）+ Agent Squad skill + 评测管理 skill + 知识库整合 + DNF攻略
 - 首次执行晚间同步推送自动化（automation-3）
+
+### 2026-04-14（大爆发日）
+- **产出量级**：跨 50+ 工作区，8个有今日日志的工作区
+- **新项目**：真心小镇 Zhenxin Ville（v1→v6，从概念图到精灵图方案）、三国谋定天下配队系统
+- **真心APP生态**：新增八字命理+狼人杀+2K经理三款App上线，绑定 zhenxinguniang.com 域名
+- **白衣卿相v2**：18处称呼修正+8项逻辑强化+三幕七轮+28线索卡 → 评测88.8分A+
+- **Agent Squad**：代号重命名（中英文等价）、v2成长记录写回8个profile、新增Profile写回铁律
+- **2KOL2**：聊天好友系统完整拆解+OL3增量设计（3个P1）、海克斯街头风暴分析、PVE GDD v3.0、梦幻征途交互图
+- **调研**：Hermes Agent对比分析、2026 AI模型全面横评、Clawvard虾佛学院
+- **教训**：Canvas手绘建筑达不到Summer哥审美要求 → AI生成精灵图是正确方向
+- **教训**：PowerShell -File 执行 .ps1 脚本可以正确处理中文变量，但 identity 目录的中文路径仍需 cmd copy 兜底
 
 ---
 
