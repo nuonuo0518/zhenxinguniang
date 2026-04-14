@@ -25,14 +25,14 @@ Agent Squad 是一支由有独立人格内核的持久Agent组成的小队（当
 C:\Users\tiannuoxie\AgentSquad\
 ├── README.md              ← 系统架构完整说明
 ├── profiles/              ← 8份核心人格档案（永久层）
-│   ├── moyin.md           ← 墨隐 (QUILL)
-│   ├── chifeng.md         ← 炽锋 (BLADE)
-│   ├── yaoguang.md        ← 摇光 (CROWN)
-│   ├── shixin.md          ← 蚀心 (VENOM)
-│   ├── tieji.md           ← 铁戟 (ANVIL)
-│   ├── huixian.md         ← 灰弦 (HAZE)
-│   ├── shimo.md           ← 拾墨 (INK)
-│   └── qiluo.md           ← 棋落 (GAMBIT)
+│   ├── deduce.md          ← Deduce ♂（证据链推理）
+│   ├── instinct.md        ← Instinct ♀（直觉本能）
+│   ├── throne.md          ← Throne ♂（社交判断）
+│   ├── toxin.md           ← Toxin ♂（操控推演）
+│   ├── anvil.md           ← Anvil ♂（经验实证）
+│   ├── tradeoff.md        ← Tradeoff ♀（利害权衡）
+│   ├── trace.md           ← Trace ♀（观察记录）
+│   └── gambit.md          ← Gambit ♀（全局推演）
 ├── templates/             ← 模板
 │   ├── role_adapter.md    ← 角色适配层模板
 │   └── mission_brief.md   ← 任务简报模板
@@ -42,16 +42,36 @@ C:\Users\tiannuoxie\AgentSquad\
 
 ## 小队成员
 
-| 代号 | 英文 | 认知风格 | 一句话人格 |
-|------|------|----------|-----------|
-| **墨隐** | QUILL | logical（证据链推理） | 以退为进的理性主义者，言必中的 |
-| **炽锋** | BLADE | intuitive（直觉本能） | 嘴硬心软的守护者，直觉从不骗人 |
-| **摇光** | CROWN | social（社交判断） | 渴望认可的决策者，情绪是最大变量 |
-| **蚀心** | VENOM | logical-manipulative（操控推演） | 冷酷的棋手，九分真一分毒 |
-| **铁戟** | ANVIL | evidence-driven（经验实证） | 拍桌子的老兵，粗犷下藏深情 |
-| **灰弦** | HAZE | logical-pragmatic（利害权衡） | 走错路的能人，良知是定时炸弹 |
-| **拾墨** | INK | evidence-driven（观察记录） | 沉默的观察者，存在感低是武器 |
-| **棋落** | GAMBIT | logical-strategic（全局推演） | 暗处的棋手，迂回制胜 |
+| 代号 | 缩写 | 性别 | 认知风格 | 一句话人格 |
+|------|------|------|----------|-----------|
+| **Deduce** | ded | ♂ | logical（证据链推理） | 以退为进的理性主义者，言必中的 |
+| **Instinct** | ins | ♀ | intuitive（直觉本能） | 嘴硬心软的守护者，直觉从不骗人 |
+| **Throne** | thr | ♂ | social（社交判断） | 渴望认可的决策者，情绪是最大变量 |
+| **Toxin** | tox | ♂ | logical-manipulative（操控推演） | 冷酷的棋手，九分真一分毒 |
+| **Anvil** | anv | ♂ | evidence-driven（经验实证） | 拍桌子的老兵，粗犷下藏深情 |
+| **Tradeoff** | trade | ♀ | logical-pragmatic（利害权衡） | 走错路的能人，良知是定时炸弹 |
+| **Trace** | trace | ♀ | evidence-driven（观察记录） | 沉默的观察者，存在感低是武器 |
+| **Gambit** | gam | ♀ | logical-strategic（全局推演） | 暗处的棋手，迂回制胜 |
+
+### 缩写映射（用户可能使用的简称）
+
+```
+ded = Deduce    ins = Instinct    thr = Throne    tox = Toxin
+anv = Anvil     trade = Tradeoff  trace = Trace   gam = Gambit
+```
+
+### 特质反查索引（用户描述特质时匹配对应Agent）
+
+| 特质关键词 | 对应Agent |
+|-----------|----------|
+| 逻辑、推理、证据链、演绎、精确 | **Deduce** |
+| 直觉、本能、第六感、守护、嘴硬心软 | **Instinct** |
+| 社交、站队、认可、情绪、拥戴 | **Throne** |
+| 操控、埋线、毒、九真一假、温文尔雅 | **Toxin** |
+| 经验、老兵、拍桌子、实证、数据核查 | **Anvil** |
+| 权衡、利害、利弊、走错路、良知 | **Tradeoff** |
+| 观察、记录、沉默、存在感低、痕迹 | **Trace** |
+| 全局、布局、暗线、棋手、弃子、迂回 | **Gambit** |
 
 ## 何时使用此技能
 
@@ -167,14 +187,14 @@ C:\Users\tiannuoxie\AgentSquad\
 **Step 1** — 定义测评目标和维度
 **Step 2** — 为8个Agent分配用户身份（用角色适配层）
 **Step 3** — 每个Agent基于自己的认知风格体验产品，产出个人反馈：
-- **墨隐**（逻辑型）：关注系统设计的逻辑一致性、漏洞
-- **炽锋**（直觉型）：关注第一印象、"手感"、直觉不适
-- **摇光**（社交型）：关注社交功能、展示、别人会怎么看
-- **蚀心**（操控型）：关注系统可被利用的弱点
-- **铁戟**（经验型）：关注与同类产品的对比、基本功
-- **灰弦**（务实型）：关注性价比、效率、值不值
-- **拾墨**（观察型）：关注细节、隐藏功能、文案
-- **棋落**（战略型）：关注长期价值、生态位、竞争力
+- **Deduce**（逻辑型）：关注系统设计的逻辑一致性、漏洞
+- **Instinct**（直觉型）：关注第一印象、"手感"、直觉不适
+- **Throne**（社交型）：关注社交功能、展示、别人会怎么看
+- **Toxin**（操控型）：关注系统可被利用的弱点
+- **Anvil**（经验型）：关注与同类产品的对比、基本功
+- **Tradeoff**（务实型）：关注性价比、效率、值不值
+- **Trace**（观察型）：关注细节、隐藏功能、文案
+- **Gambit**（战略型）：关注长期价值、生态位、竞争力
 
 **Step 4** — 汇总8份反馈生成多维度测评报告
 
@@ -231,7 +251,7 @@ C:\Users\tiannuoxie\AgentSquad\
 
 | 代号 | 角色 | 认知风格 | 本次定位 |
 |------|------|----------|---------|
-| 墨隐 | [角色名] | logical | [一句话定位] |
+| Deduce | [角色名] | logical | [一句话定位] |
 | ... | ... | ... | ... |
 ```
 
