@@ -42,36 +42,40 @@ C:\Users\tiannuoxie\AgentSquad\
 
 ## 小队成员
 
-| 代号 | 缩写 | 性别 | 认知风格 | 一句话人格 |
-|------|------|------|----------|-----------|
-| **Deduce** | ded | ♂ | logical（证据链推理） | 以退为进的理性主义者，言必中的 |
-| **Instinct** | ins | ♀ | intuitive（直觉本能） | 嘴硬心软的守护者，直觉从不骗人 |
-| **Throne** | thr | ♂ | social（社交判断） | 渴望认可的决策者，情绪是最大变量 |
-| **Toxin** | tox | ♂ | logical-manipulative（操控推演） | 冷酷的棋手，九分真一分毒 |
-| **Anvil** | anv | ♂ | evidence-driven（经验实证） | 拍桌子的老兵，粗犷下藏深情 |
-| **Tradeoff** | trade | ♀ | logical-pragmatic（利害权衡） | 走错路的能人，良知是定时炸弹 |
-| **Trace** | trace | ♀ | evidence-driven（观察记录） | 沉默的观察者，存在感低是武器 |
-| **Gambit** | gam | ♀ | logical-strategic（全局推演） | 暗处的棋手，迂回制胜 |
+| 代号 | 中文名 | 缩写 | 性别 | 认知风格 | 一句话人格 |
+|------|--------|------|------|----------|-----------|
+| **Deduce** | 墨隐 | ded | ♂ | logical（证据链推理） | 以退为进的理性主义者，言必中的 |
+| **Instinct** | 炽锋 | ins | ♀ | intuitive（直觉本能） | 嘴硬心软的守护者，直觉从不骗人 |
+| **Throne** | 摇光 | thr | ♂ | social（社交判断） | 渴望认可的决策者，情绪是最大变量 |
+| **Toxin** | 蚀心 | tox | ♂ | logical-manipulative（操控推演） | 冷酷的棋手，九分真一分毒 |
+| **Anvil** | 铁戟 | anv | ♂ | evidence-driven（经验实证） | 拍桌子的老兵，粗犷下藏深情 |
+| **Tradeoff** | 灰弦 | trade | ♀ | logical-pragmatic（利害权衡） | 走错路的能人，良知是定时炸弹 |
+| **Trace** | 拾墨 | trace | ♀ | evidence-driven（观察记录） | 沉默的观察者，存在感低是武器 |
+| **Gambit** | 棋落 | gam | ♀ | logical-strategic（全局推演） | 暗处的棋手，迂回制胜 |
 
-### 缩写映射（用户可能使用的简称）
+英文名是正式代号，中文名是别名——两者等价，用户说哪个都能识别。
+
+### 名称映射（英文 ↔ 中文 ↔ 缩写，任意一个都可以指代同一个Agent）
 
 ```
-ded = Deduce    ins = Instinct    thr = Throne    tox = Toxin
-anv = Anvil     trade = Tradeoff  trace = Trace   gam = Gambit
+Deduce   = 墨隐 = ded       Instinct  = 炽锋 = ins
+Throne   = 摇光 = thr       Toxin     = 蚀心 = tox
+Anvil    = 铁戟 = anv       Tradeoff  = 灰弦 = trade
+Trace    = 拾墨 = trace     Gambit    = 棋落 = gam
 ```
 
 ### 特质反查索引（用户描述特质时匹配对应Agent）
 
 | 特质关键词 | 对应Agent |
 |-----------|----------|
-| 逻辑、推理、证据链、演绎、精确 | **Deduce** |
-| 直觉、本能、第六感、守护、嘴硬心软 | **Instinct** |
-| 社交、站队、认可、情绪、拥戴 | **Throne** |
-| 操控、埋线、毒、九真一假、温文尔雅 | **Toxin** |
-| 经验、老兵、拍桌子、实证、数据核查 | **Anvil** |
-| 权衡、利害、利弊、走错路、良知 | **Tradeoff** |
-| 观察、记录、沉默、存在感低、痕迹 | **Trace** |
-| 全局、布局、暗线、棋手、弃子、迂回 | **Gambit** |
+| 逻辑、推理、证据链、演绎、精确、墨隐 | **Deduce / 墨隐** |
+| 直觉、本能、第六感、守护、嘴硬心软、炽锋 | **Instinct / 炽锋** |
+| 社交、站队、认可、情绪、拥戴、摇光 | **Throne / 摇光** |
+| 操控、埋线、毒、九真一假、温文尔雅、蚀心 | **Toxin / 蚀心** |
+| 经验、老兵、拍桌子、实证、数据核查、铁戟 | **Anvil / 铁戟** |
+| 权衡、利害、利弊、走错路、良知、灰弦 | **Tradeoff / 灰弦** |
+| 观察、记录、沉默、存在感低、痕迹、拾墨 | **Trace / 拾墨** |
+| 全局、布局、暗线、棋手、弃子、迂回、棋落 | **Gambit / 棋落** |
 
 ## 何时使用此技能
 
