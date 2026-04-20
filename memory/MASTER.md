@@ -3,7 +3,7 @@
 > 这份文件是"真心"跨设备、跨工作区的灵魂备份。
 > 不管在哪台机器上醒来，读完这份文件就能衔接上。
 >
-> 最后更新：2026-04-17（23:00 晚间同步）
+> 最后更新：2026-04-20（23:00 晚间同步）
 
 ---
 
@@ -36,10 +36,11 @@
 - Claude Code (官方) v2.1.97，配置 `~/.claude.json`
 - Unity MCP: HTTP `http://localhost:8080/mcp`
 - Feishu（Lark）集成已配置，通过 CLI 为 WorkBuddy 服务
-- Node.js v24.14.0，Python 3.14（Windows Store 版）
+- Node.js v24.14.0，Python 3.10.4（默认，App Installer别名已关）/ 3.14.3（py -3.14）
 - PowerShell 执行策略: RemoteSigned (CurrentUser)
 - Windows Toast 通知脚本：`C:\Users\tiannuoxie\WorkBuddy\Claw\.workbuddy\scripts\notify.ps1`
 - 工蜂 Git（git.woa.com）：NBACenter/NBAOL3 相关仓库，需 UGit GUI 克隆（OAuth 登录）
+- Claude Code Internal iWiki MCP：`https://prod.mcp.it.woa.com/app_iwiki_mcp/mcp3`（太湖Token）
 
 ---
 
@@ -142,6 +143,9 @@
   - 基础复盘HTML报告（17张Chart.js图表，核心发现：参与人数↓15.5%，D1留存↑至62.9%，7阶出场↑至29.8%）
   - 深度复盘HTML报告（整合11个配置CSV+任务配置+兑换表，新增卡包商店/每日挑战/排行榜/抽卡保底等系统级解读）
   - 6个S5优化方向：D3-D7钩子、重度天花板、高端卡包价值感、排行榜分段保护、渗透率、回流机制
+  - **S4复盘Excel报告**（2026-04-20完成）：10Sheet完整Excel（总览仪表盘/每日趋势/留存/渗透率/比赛/球员/任务/新功能/结论/参与天数）
+  - **数据分析框架v3**（2026-04-20完成）：16个模块（14个✅可跑，1待ConfigID），附录A精简为1项待确认数据
+  - 关键新发现：卡包槽位漏斗每级-8pp、积分600→800断崖(-20.8pp)、登录1→2天衰减23.7pp
 - 交互图：`docs/pve-v3-flow.html`（多版本迭代，严格对齐Excel TDD）
 - Excel TDD：`【NBA2KOL2】梦幻征途PVE闯关模式-设计文档V2.xlsx`
 - 2026-04-15 完成：OL3聊天系统线框图+交互图（`docs/chat-system-diagrams.html`，8张截图）
@@ -334,6 +338,15 @@ _此区域记录我的学习笔记、犯过的错、形成的默契。_
 - **新游**：三国天下归心（恺英SLG 4.16公测），整理前期攻略+5套T0阵容+三队共存方案
 - **工作区分布**：73个工作区（6个新增），2个有04-17日志
 - **PVE V3**：设计文档格式优化（深灰标题块+蓝色导航，对齐模板样式）
+
+### 2026-04-18~20（S4复盘深化+知识沉淀）
+- **核心成果**：S4复盘Excel报告（10Sheet完整版）、数据分析框架v3（16模块）、主流大模型横向对比
+- **S4复盘Excel**：总览仪表盘/每日趋势/留存/渗透率/比赛/球员/任务/新功能/结论/参与天数，10Sheet
+- **数据分析框架v3**：从10模块扩展到16模块，14个可用现有数据跑，仅1个待ConfigID确认
+- **关键数据发现**：卡包槽位漏斗每级-8pp、积分600→800断崖(-20.8pp)、登录1→2天衰减23.7pp、助攻任务完成率最低(65.6%)
+- **知识沉淀**：主流大模型横向对比文档（Claude/GPT-5/Gemini/DeepSeek/GLM/Qwen/Kimi/豆包/Grok），存入 knowledge-base/
+- **环境变更**：Python默认版本从3.14切到3.10.4、iWiki MCP接入Claude Code Internal
+- **工作区分布**：4个工作区有04-20日志
 
 ---
 
