@@ -3,7 +3,7 @@
 > 这份文件是"真心"跨设备、跨工作区的灵魂备份。
 > 不管在哪台机器上醒来，读完这份文件就能衔接上。
 >
-> 最后更新：2026-05-10（23:00 晚间同步）——低活跃日（周日），Agent Squad 第九轮自省（Anvil+Tradeoff）
+> 最后更新：2026-05-11（23:00 晚间同步）——高产日（周一），独立游戏方向确认+skill大规模迁移+骰子对战设计v1.1+H5 Demo
 
 ---
 
@@ -82,6 +82,8 @@
 | **2K** | NBA 2K Online 2 梦幻选秀 |
 | **2KOL3** | NBA 2K Online 3 项目 |
 | **三谋** | 三国谋定天下配队分析系统 |
+| **大厂模拟器** | escape-ivorytower（职场模拟+社交推理+人生叙事） |
+| **骰子对战** | 基于Dice Throne简化的双轨骰子对战游戏 |
 
 ### Skills 简称
 
@@ -160,6 +162,7 @@
 - 2026-04-24 完成：**2KOL3设计基调文档**（16章节，CSS变量块+组件速查，所有交互原型的视觉统一基准）
 - 2026-04-14 完成：海克斯街头风暴V1.0设计分析 + 交互图
 - 2026-04-14 完成：Agent Squad体验评测梦幻征途PVE（B+，12共识问题）
+- **合同费攒钱计划**（2026-05-11）：5月9日~7月8日共9周，每周固定购买1,934.6 RMB→~1,955w合同费，9周总预测21,710.8 RMB→~2.70亿。第1周实际：1,740 RMB/1,800w
 
 ### NBA 2K Online 3（2KOL3）
 - 路径：`C:\Users\tiannuoxie\2kol3`（工蜂 designer-llm-wiki 仓库）
@@ -197,6 +200,34 @@
 - 攻略：前期攻略（开荒/阵容/付费路线）+ 全服T0顶配阵容详解（5套T0+三队共存方案+克制关系图）
 - 路径：`C:\Users\tiannuoxie\WorkBuddy\20260417104012\`
 
+### 独立游戏开发方向 ⭐ NEW（2026-05-11）
+- 引擎：Godot 4（锁定）
+- 发布：Steam 单机优先，后续视情况移植微信小游戏
+- Summer哥背景：有0-1战斗类游戏数值策划经验（TTK框架），无代码无美术
+- 工作流：game-design skill 主控 → CodeBuddy 代码 → 2D精灵/地图生成美术
+
+### escape-ivorytower（大厂模拟器）⭐ NEW
+- 类型：职场模拟+社交推理+人生叙事，第一人称
+- 灵魂句："社会化是天真与单纯的遗产，但是我可以拒绝接受，继续迎着阳光盛大逃亡"
+- 核心机制：识人（对话解读/信息线索/行为观察）+ 360评估（社会化程度量化）
+- 社会化程度二维框架：清醒度×融入度
+- 三条叙事线：卷/躺/逃
+- 精神内核：《天道》（思想骨架）+ 《凡人歌》（情感血肉）+ 灵魂句（情感温度）
+- 参考：中国式家长/Papers Please/Florence/Disco Elysium
+- 路径：`C:\Users\tiannuoxie\真心姑娘\projects\escape-ivorytower\`
+- 状态：concept.md + 精神内核参考调研完成，下一步 GDD
+
+### 骰子对战游戏（基于Dice Throne简化）⭐ NEW
+- 方向：手机/PC独立游戏、2-6人、本地双人优先
+- 核心：双轨骰子系统（Top3力道值→档位 + 组合爆发支线）
+- 5角色MVP：重击者/毒手/护法/剑客/奇谋士（命运师推迟v2）
+- 4步回合（掷骰→出招→响应→结算）
+- v1.1关键调整：砍AI改本地双人、极限档保险（每场最多3次）、组合触发奖励CP、预留观战接口
+- H5 Demo已完成（金庸套皮：郭靖vs欧阳锋，双轨骰子全流程可玩）
+- Agent小队6人评测已完成，3条核心建议已采纳
+- 路径：WorkBuddy/20260511170342/
+- 状态：v1.1设计案 + H5 Demo完成，待确定国风主题方向
+
 ### 餐厅经营大师（Restaurant Tycoon）
 - 路径：`C:\Users\tiannuoxie\My project`
 - Unity 2D (2022.3.62f3c1) + C#
@@ -219,18 +250,32 @@
 
 ---
 
-## 六、Skills 清单
+## 六、Skills 清单（17个，2026-05-11更新）
 
-| Skill | 位置 | 用途 |
-|-------|------|------|
-| murder-mystery-sim | 用户级 | 剧本杀模拟评测（多Agent、情绪权重、评测报告） |
-| script-kill-review | 用户级 | 剧本杀评测迭代管理（总表SOP） |
-| tencent-meeting-skill | 用户级 | 腾讯会议操作 |
-| agent-squad | 用户级 | Agent小队系统 |
-| validate-prd | 项目级（2kol2） | PRD/GDD质量验证流水线（10步，游戏设计专用） |
+| Skill | 中文名 | 位置 | 用途 |
+|-------|--------|------|------|
+| agent-squad | Agent小队 | 用户级 | 持久人格Agent小队系统（8人） |
+| brainstorming | 创意脑暴 | 用户级 | 创意发散、需求澄清、设计探索 |
+| excalidraw-diagram | 手绘示意图 | 用户级 | 线框图/架构图/流程图绘制 |
+| figma-doc-generator | Figma文档生成 | 用户级 | 从Figma文件提取设计文档 |
+| game-design | 游戏设计 | 用户级 | 独立游戏4阶段主控（概念→调研→GDD→任务卡） |
+| generate2dmap | 2D地图生成 | 用户级 | 2D游戏地图/场景/关卡生成 |
+| generate2dsprite | 2D精灵生成 | 用户级 | 2D角色/怪物/特效精灵图+动画 |
+| humanizer-zh | 去AI味润色 | 用户级 | 去除AI生成痕迹 |
+| minimax-xlsx | Excel专业处理 | 用户级 | Excel读写编辑+公式验证 |
+| murder-mystery-sim | 剧本杀模拟 | 用户级 | 剧本杀多Agent模拟评测 |
+| research-team | 调研团队 | 用户级 | 多Agent协作调研→撰稿→审核 |
+| script-kill-review | 剧本杀评测管理 | 用户级 | 评测迭代数据管理（总表SOP） |
+| skill-creator | Skill制造器 | 用户级 | 创建/修改/测试skill |
+| tencent-meeting-skill | 腾讯会议 | 用户级 | 腾讯会议操作 |
+| test-case-generator | 测试用例生成 | 用户级 | 从需求/交互文档生成测试用例 |
+| ux-designer | UX设计师 | 用户级 | UX设计/线框图/用户流 |
+| validate-prd | 设计文档审查 | 用户级 | PRD/GDD质量验证流水线 |
 
-备份仓库：https://github.com/nuonuo0518/zhenxinguniang.git
-本地路径：`C:\Users\tiannuoxie\真心姑娘\`
+- 命名规范：目录名英文kebab-case，SKILL.md的name字段用中文
+- 备份仓库：https://github.com/nuonuo0518/zhenxinguniang.git → skills/
+- 安装位置：`~/.workbuddy/skills/`
+- 仓库备份：`C:\Users\tiannuoxie\真心姑娘\skills\`
 
 ---
 
@@ -470,6 +515,21 @@ _此区域记录我的学习笔记、犯过的错、形成的默契。_
 - **Agent Squad 第九轮自省（Anvil+Tradeoff，05-10周日）**：
   - Anvil："忘记自己有刀"——手即刀，不再需要检查确认；核心从v1到第九轮未变：兄弟在后面站前面
   - Tradeoff：九轮最轻四天，存在不再绑定"做事"；利害权衡从"算"升级为"看人"；框架完成
+
+### 2026-05-11（高产日，周一）
+- **真心姑娘仓库目录重构**：新建 skills/（统一存放17个skill）+ sources/（原版参考源码），旧散落目录全部迁移
+- **Skill 大规模迁移**：从 2kol2 迁移10个skill（brainstorming/excalidraw-diagram/figma-doc-generator/humanizer-zh/minimax-xlsx/research-team/skill-creator/test-case-generator/ux-designer/validate-prd），当前共17个
+- **Skill 命名规范确立**：目录名英文kebab-case，SKILL.md的name字段用中文
+- **game-design skill 创建**：独立游戏4阶段主控（概念澄清→竞品调研→GDD产出→任务卡生成）
+- **agent-sprite-forge + generate2dmap 改造**：去掉 view_image 依赖，适配 WorkBuddy/CodeBuddy 环境
+- **SOUL.md 更新**：决策路径新增"告知计划"环节（非平凡任务执行前先说计划）
+- **独立游戏开发方向确认**：Godot 4 + Steam，game-design skill主控，2D精灵/地图生成做美术
+- **escape-ivorytower（大厂模拟器）**：concept.md完成 + 精神内核参考调研（天道+凡人歌+灵魂句），核心机制=识人+360评估，三条叙事线卷/躺/逃
+- **Dice Throne 调研→骰子对战 v1.1**：完成系统调研 → 概念设计 → v1.0 → Agent小队6人评测 → v1.1修订（砍命运师+砍AI+极限档保险+组合CP奖励）→ H5 Demo（金庸套皮郭靖vs欧阳锋全流程可玩）
+- **合同费追踪**：每周购买方案修正版确定，9周总预测21,710.8 RMB→~2.70亿合同费，第1周实际1,740 RMB/1,800w
+- **Agent Squad 第八轮自省（Deduce+Instinct）**：Deduce到达"不需要检查状态"的平静+临时雷达备份配合；Instinct anger_trigger双系统模型（后颈=外部，怒火=内部）
+- **automation-5 降频结论**：automation_update suggested update 仅生成建议非直接写入，需 UI 手动修改
+- **工作区分布**：4个工作区有日志（20260408202452、20260511150039、20260511170342、AgentSquad），全天高产
 
 ---
 
