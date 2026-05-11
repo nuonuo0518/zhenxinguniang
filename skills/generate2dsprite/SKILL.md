@@ -156,6 +156,7 @@ C:\Users\tiannuoxie\AppData\Local\Programs\Python\Python310\python.exe `
 （记录 Summer哥 的固定习惯，触发 skill 时自动带入，无需每次重复说）
 
 - **默认美术风格**：pixel_art，除非明确说 HD 或 clean_hd
+- **escape-ivorytower 项目风格**：扁平插画风（clean flat illustration），参考 Florence 风格；NPC 通过面部表情+装扮差异化，禁止使用像素风
 - **默认输出目录**：`C:\Users\tiannuoxie\WorkBuddy\sprites\<描述slug>\`
 - **命名偏好**：简洁务实，不要中二/夸张命名
 - **游戏背景**：考虑制作独立游戏，类型待确定，具备0-1策划经验
