@@ -1,0 +1,82 @@
+[
+  {
+    "query": "我准备给客户端加一个‘新手引导跳过’功能，先别写代码，帮我出一份设计案，包含目标、交互流程、状态机、异常情况和埋点。",
+    "should_trigger": true
+  },
+  {
+    "query": "我们下周要评审球员交易市场改版，想先写方案文档。请把这个想法整理成策划案，给出 2-3 种方案和推荐。",
+    "should_trigger": true
+  },
+  {
+    "query": "Need a feature spec before implementation for an in-app announcement center. Help me think through requirements, data flow, failure cases, and rollout plan.",
+    "should_trigger": true
+  },
+  {
+    "query": "帮我把‘战队招募大厅’这个点子收敛成 PRD，先问我问题，再输出分章节文档，不要直接开始实现。",
+    "should_trigger": true
+  },
+  {
+    "query": "I have a rough idea for a moderation workflow in our admin tool. Let's turn it into a system design doc with components, APIs, and edge cases.",
+    "should_trigger": true
+  },
+  {
+    "query": "先帮我写技术方案，不动代码。目标是把当前登录奖励改成赛季制，要有规则说明、配置影响、客户端展示和测试范围。",
+    "should_trigger": true
+  },
+  {
+    "query": "老板只给了一句‘做个回流礼包优化’，你先跟我一起梳理需求，最后产出一版功能设计说明。",
+    "should_trigger": true
+  },
+  {
+    "query": "Can you help me draft a planning doc for migrating our notification settings page? I want options, trade-offs, and a recommended approach.",
+    "should_trigger": true
+  },
+  {
+    "query": "我们想试一个‘球员卡升星保底’机制，先做方案评审材料，包含用户价值、核心规则、边界条件、风险。",
+    "should_trigger": true
+  },
+  {
+    "query": "Turn this vague idea into an implementation-ready design proposal: shared draft autosave with conflict handling. Ask me questions first.",
+    "should_trigger": true
+  },
+  {
+    "query": "给我直接把这个 React 设置页做出来，先从组件和接口开始，不需要方案文档。",
+    "should_trigger": false
+  },
+  {
+    "query": "这个登录奖励页面已经有 PRD 了，你直接按文档补代码并修掉类型报错。",
+    "should_trigger": false
+  },
+  {
+    "query": "我想要几个活动 slogan，偏热血一点，给我 20 条备选。",
+    "should_trigger": false
+  },
+  {
+    "query": "帮我 review 一下这个技术方案草稿有没有错别字，顺手压缩成一页汇报摘要。",
+    "should_trigger": false
+  },
+  {
+    "query": "用户已经确认方案了，下一步把任务拆成 implementation plan 和 TODO，不用再做设计探索。",
+    "should_trigger": false
+  },
+  {
+    "query": "查一下这个仓库里支付失败是怎么处理的，给我定位相关代码。",
+    "should_trigger": false
+  },
+  {
+    "query": "我们大概要加一个排行榜功能，不过你直接给我数据库表结构和接口定义代码片段就行。",
+    "should_trigger": false
+  },
+  {
+    "query": "帮我把这段中文文案润色成更像人写的，不要改含义。",
+    "should_trigger": false
+  },
+  {
+    "query": "I need wireframes for a settings page redesign, mostly layout and UX details, not a written technical/design spec.",
+    "should_trigger": false
+  },
+  {
+    "query": "把这个需求会上的录音整理成会议纪要和 action items，不要展开写方案。",
+    "should_trigger": false
+  }
+]
