@@ -1,3 +1,7 @@
 # WorkBuddy/CodeBuddy 缓存
 .workbuddy/
 .codebuddy/
+
+# 安装包/临时文件
+CodeBuddy CN/
+git_pull_output.txt
