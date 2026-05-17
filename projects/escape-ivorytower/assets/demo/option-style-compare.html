@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>选项样式对比</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0a10;
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    color: #e8e6e0;
+    padding: 20px 16px 40px;
+  }
+  h2 { font-size: 13px; color: #6a6860; letter-spacing: 2px; margin-bottom: 14px; }
+  .compare-wrap { display: flex; flex-direction: column; gap: 32px; max-width: 480px; margin: 0 auto; }
+  .section-label {
+    font-size: 11px; color: #c8a96e; letter-spacing: 1px;
+    border-left: 3px solid #c8a96e; padding-left: 8px; margin-bottom: 12px;
+  }
+  .demo-box {
+    background: #13131c; border: 1px solid #22222e;
+    border-radius: 14px; padding: 16px; overflow: hidden;
+  }
+
+  /* NPC气泡（共用） */
+  .npc-bubble {
+    background: #1e1e2a; border-radius: 4px 12px 12px 12px;
+    padding: 12px 14px; margin-bottom: 14px;
+    font-size: 13px; line-height: 1.8; color: #d8d6d0;
+    animation: fadeUp 0.3s ease;
+    border: 1px solid #2a2a3a;
+  }
+  .npc-name-tag {
+    font-size: 10px; color: #c8a96e; font-weight: 600;
+    letter-spacing: 1px; margin-bottom: 6px;
+  }
+
+  /* ===== 样式A：气泡对话 ===== */
+  .chat-area { display: flex; flex-direction: column; gap: 8px; }
+  .player-options-chat { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+  .chat-option {
+    background: #221e30; border: 1px solid #3a3050;
+    border-radius: 12px 4px 12px 12px;
+    padding: 10px 14px; font-size: 13px; color: #b8b0d0;
+    cursor: pointer; max-width: 82%; text-align: right;
+    transition: all 0.15s; line-height: 1.5;
+  }
+  .chat-option:hover { background: #2e2840; border-color: #9a80e0; color: #d8d0f0; }
+  .chat-option.locked-chat {
+    opacity: 0.3; cursor: not-allowed; border-style: dashed;
+    border-color: #3a3050;
+  }
+  .chat-option.sent {
+    background: #1e2a3a; border-color: #3a6080;
+    color: #a0c0d8; cursor: default;
+    animation: fadeUp 0.25s ease;
+  }
+  .chat-option .lock-txt { font-size: 10px; color: #5a5070; display: block; margin-top: 3px; }
+  .chat-option .unlock-tag {
+    font-size: 10px; color: #9a70e0; display: block; margin-top: 3px;
+  }
+  /* NPC回复气泡 */
+  .npc-reply {
+    background: #1e1e2a; border: 1px solid #2a2a3a;
+    border-radius: 4px 12px 12px 12px;
+    padding: 10px 14px; font-size: 13px; line-height: 1.7;
+    color: #c8c6c0; max-width: 85%;
+    animation: fadeUp 0.3s ease; display: none;
+  }
+  .npc-reply.visible { display: block; }
+
+  /* ===== 样式B：融入对话流 ===== */
+  .flow-area { display: flex; flex-direction: column; gap: 10px; }
+  .flow-options { display: flex; flex-direction: column; gap: 6px; }
+  .flow-option {
+    background: transparent; border: 1px solid #2a2a3a;
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 12px; color: #8a8880; cursor: pointer;
+    transition: all 0.15s; line-height: 1.5;
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .flow-option::before {
+    content: '▷'; font-size: 11px; color: #4a4848;
+    flex-shrink: 0; margin-top: 1px; transition: color 0.15s;
+  }
+  .flow-option:hover { border-color: #c8a96e; color: #d8d6d0; }
+  .flow-option:hover::before { color: #c8a96e; }
+  .flow-option.chosen {
+    border: none; background: transparent; padding-left: 0;
+    color: #e8d8b8; font-style: italic; cursor: default;
+    pointer-events: none; font-size: 13px;
+  }
+  .flow-option.chosen::before { content: '"'; color: #c8a96e; font-size: 16px; }
+  .flow-option.locked-flow { opacity: 0.3; cursor: not-allowed; }
+  .flow-option.locked-flow:hover { border-color: #2a2a3a; color: #8a8880; }
+  .flow-option.locked-flow:hover::before { color: #4a4848; }
+  .flow-npc-reply {
+    background: #1a1a24; border-left: 3px solid #3a3a4a;
+    border-radius: 0 8px 8px 0; padding: 10px 14px;
+    font-size: 13px; color: #c0beb8; line-height: 1.7;
+    display: none; animation: fadeUp 0.3s ease;
+  }
+  .flow-npc-reply.visible { display: block; }
+  .flow-npc-label { font-size: 10px; color: #6a6860; margin-bottom: 4px; }
+
+  /* 按钮 */
+  .reset-btn {
+    margin-top: 10px; padding: 8px 16px;
+    background: #1a1a24; border: 1px solid #3a3a45;
+    border-radius: 6px; font-size: 12px; color: #7a7870;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .reset-btn:hover { border-color: #c8a96e; color: #c8a96e; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="compare-wrap">
+
+  <div>
+    <h2>选项样式对比 · 选一个你更喜欢的</h2>
+  </div>
+
+  <!-- ===== 样式A：聊天气泡 ===== -->
+  <div>
+    <div class="section-label">样式 A · 聊天气泡（微信感）</div>
+    <div class="demo-box">
+      <div class="chat-area" id="chatArea">
+        <div class="npc-bubble">
+          <div class="npc-name-tag">LEADER · 陈博</div>
+          哦，你来了。坐吧。我直接说——你是今年校招来的，我们组这半年比较忙，你要做好心理准备。
+        </div>
+        <div class="player-options-chat" id="chatOptions">
+          <div class="chat-option" onclick="pickChat(this, 'a')">
+            没问题，我本来就做好了拼的准备。
+          </div>
+          <div class="chat-option" onclick="pickChat(this, 'b')">
+            请问"比较忙"具体是什么量级？
+          </div>
+          <div class="chat-option" onclick="pickChat(this, 'c')">
+            我明白了，会努力适应的。
+          </div>
+          <div class="chat-option locked-chat">
+            陈哥，你之前带过的校招生后来都去哪了？
+            <span class="lock-txt">🔒 社会化程度需达到 60</span>
+          </div>
+        </div>
+        <div class="npc-reply" id="chatReply"></div>
+      </div>
+      <button class="reset-btn" onclick="resetChat()">↺ 重置</button>
+    </div>
+  </div>
+
+  <!-- ===== 样式B：融入对话流 ===== -->
+  <div>
+    <div class="section-label">样式 B · 融入对话流（文字游戏感）</div>
+    <div class="demo-box">
+      <div class="flow-area" id="flowArea">
+        <div class="npc-bubble">
+          <div class="npc-name-tag">LEADER · 陈博</div>
+          哦，你来了。坐吧。我直接说——你是今年校招来的，我们组这半年比较忙，你要做好心理准备。
+        </div>
+        <div class="flow-options" id="flowOptions">
+          <div class="flow-option" onclick="pickFlow(this,'a','没问题，我本来就做好了拼的准备。','他点了点头，表情没有太大变化。"好。那就这样，先熟悉一下代码库。"')">
+            没问题，我本来就做好了拼的准备。
+          </div>
+          <div class="flow-option" onclick="pickFlow(this,'b','请问"比较忙"具体是什么量级？我想提前规划一下。','他停顿了一下，眼神有点微妙。"正常互联网节奏吧。你以后就知道了。"他没有正面回答你。')">
+            请问"比较忙"具体是什么量级？我想提前规划一下。
+          </div>
+          <div class="flow-option" onclick="pickFlow(this,'c','我明白了。我会努力适应的。','「嗯。」他看了你一眼，转回屏幕。')">
+            我明白了。我会努力适应的。
+          </div>
+          <div class="flow-option locked-flow">
+            陈哥，你之前带过的校招生后来都去哪了？
+            <span style="font-size:10px;color:#4a4040;display:block;margin-top:3px;">🔒 社会化程度需达到 60</span>
+          </div>
+        </div>
+        <div class="flow-npc-reply" id="flowReply">
+          <div class="flow-npc-label">陈博</div>
+          <span id="flowReplyText"></span>
+        </div>
+      </div>
+      <button class="reset-btn" onclick="resetFlow()">↺ 重置</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CHAT_REPLIES = {
+  a: '他点了点头，表情没有太大变化。「好。那就这样，先熟悉一下代码库。」',
+  b: '他停顿了一下，眼神有点微妙。「正常互联网节奏吧。你以后就知道了。」他没有正面回答你。',
+  c: '「嗯。」他看了你一眼，转回屏幕。',
+};
+
+function pickChat(el, id) {
+  if(el.classList.contains('locked-chat')) return;
+  // 清除其他选项
+  document.querySelectorAll('#chatOptions .chat-option:not(.locked-chat)').forEach(b => {
+    if(b !== el) { b.style.display = 'none'; }
+  });
+  el.classList.add('sent');
+  el.onclick = null;
+  // 显示NPC回复
+  setTimeout(() => {
+    const r = document.getElementById('chatReply');
+    r.textContent = CHAT_REPLIES[id];
+    r.className = 'npc-reply visible';
+  }, 400);
+}
+function resetChat() {
+  document.querySelectorAll('#chatOptions .chat-option').forEach(b => {
+    b.style.display = '';
+    b.classList.remove('sent');
+    if(!b.classList.contains('locked-chat')) b.onclick = function(){ pickChat(this, this.dataset.id); };
+  });
+  // 重新绑定
+  const opts = document.querySelectorAll('#chatOptions .chat-option:not(.locked-chat)');
+  ['a','b','c'].forEach((id,i) => { opts[i].onclick = () => pickChat(opts[i], id); });
+  document.getElementById('chatReply').className = 'npc-reply';
+}
+
+function pickFlow(el, id, playerText, npcText) {
+  if(el.classList.contains('locked-flow')) return;
+  // 隐藏其他选项，选中变成引用文字
+  document.querySelectorAll('#flowOptions .flow-option').forEach(b => {
+    if(b !== el) b.style.display = 'none';
+  });
+  el.className = 'flow-option chosen';
+  el.textContent = playerText;
+  el.onclick = null;
+  // NPC回复
+  setTimeout(() => {
+    const r = document.getElementById('flowReply');
+    document.getElementById('flowReplyText').textContent = npcText;
+    r.className = 'flow-npc-reply visible';
+  }, 350);
+}
+function resetFlow() {
+  document.querySelectorAll('#flowOptions .flow-option').forEach(b => { b.style.display = ''; });
+  // 重新绑定
+  const data = [
+    ['a','没问题，我本来就做好了拼的准备。','他点了点头，表情没有太大变化。「好。那就这样，先熟悉一下代码库。」'],
+    ['b','请问"比较忙"具体是什么量级？我想提前规划一下。','他停顿了一下，眼神有点微妙。「正常互联网节奏吧。你以后就知道了。」他没有正面回答你。'],
+    ['c','我明白了。我会努力适应的。','「嗯。」他看了你一眼，转回屏幕。'],
+  ];
+  const opts = document.querySelectorAll('#flowOptions .flow-option:not(.locked-flow)');
+  data.forEach(([id,pt,nt],i) => {
+    opts[i].className = 'flow-option';
+    opts[i].textContent = pt;
+    opts[i].onclick = () => pickFlow(opts[i], id, pt, nt);
+  });
+  document.getElementById('flowReply').className = 'flow-npc-reply';
+}
+</script>
+</body>
+</html>

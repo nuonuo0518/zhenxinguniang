@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大厂模拟器 · 对话体验 Demo</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0a10;
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    color: #e8e6e0;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .game-wrap {
+    width: 100%; max-width: 480px;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+
+  /* 背景 */
+  .scene-bg {
+    position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px; height: 50%;
+    background: #1a1e2a; overflow: hidden; z-index: 0;
+  }
+  .scene-bg img { width:100%; height:100%; object-fit:cover; opacity:0.6; filter:brightness(0.8) saturate(0.7); }
+  .scene-bg-fade {
+    position: absolute; bottom:0; left:0; right:0; height:70%;
+    background: linear-gradient(to bottom, transparent, #0a0a10);
+  }
+
+  /* 状态栏 */
+  .status-bar {
+    position: relative; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px 8px;
+  }
+  .day-info { font-size: 12px; color: #6a6860; }
+  .day-info b { color: #c8a96e; }
+  .social-meter { display:flex; align-items:center; gap:6px; }
+  .social-label { font-size:11px; color:#6a6860; }
+  .social-bar-wrap { width:80px; height:6px; background:#2a2a35; border-radius:3px; overflow:hidden; }
+  .social-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,#c8a96e,#e8c88e); transition:width 0.5s; }
+  .social-value { font-size:11px; color:#c8a96e; font-weight:600; }
+
+  /* NPC立绘 */
+  .npc-area {
+    position: relative; z-index: 5;
+    height: 260px;
+    display: flex; align-items: flex-end; justify-content: center;
+  }
+  .npc-portrait {
+    height: 240px; width: auto; object-fit: contain;
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.7));
+    transition: opacity 0.4s, transform 0.4s;
+    transform-origin: bottom center;
+  }
+  .npc-portrait.speaking { transform: scale(1.02); }
+
+  /* 对话流区域 */
+  .dialogue-stream {
+    position: fixed;
+    left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px;
+    top: 320px;
+    bottom: 260px;
+    padding: 0 16px 12px;
+    display: flex; flex-direction: column; gap: 12px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    z-index: 10;
+  }
+
+  /* NPC说话泡 */
+  .npc-msg {
+    display: flex; gap: 10px; align-items: flex-start;
+    animation: fadeUp 0.35s ease;
+  }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    object-fit: cover; flex-shrink: 0;
+    border: 2px solid #2a2a3a;
+    margin-top: 2px;
+  }
+  .avatar-player {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #3a3060, #1e1a30);
+    flex-shrink: 0; border: 2px solid #3a3060;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; margin-top: 2px;
+  }
+  .npc-msg-bubble {
+    background: rgba(22,22,32,0.96);
+    border: 1px solid #2a2a3a; border-radius: 4px 12px 12px 12px;
+    padding: 12px 14px; flex: 1;
+  }
+  .npc-msg-name {
+    font-size: 10px; color: #c8a96e; font-weight:600;
+    letter-spacing:1px; margin-bottom:7px;
+    display:flex; align-items:center; gap:5px;
+  }
+  .npc-msg-name::before { content:''; width:3px; height:11px; background:#c8a96e; border-radius:2px; display:inline-block; }
+  .npc-msg-text { font-size:14px; line-height:1.85; color:#e0deda; }
+  .npc-msg-text .hl { color:#e8c88e; font-style:italic; }
+
+  /* 内心注释 */
+  .thought-bubble {
+    background: rgba(28,18,8,0.92);
+    border: 1px solid #3a2a18; border-left:3px solid #c8703a;
+    border-radius: 0 8px 8px 0;
+    padding: 8px 12px;
+    font-size:12px; color:#c8a08a; line-height:1.65; font-style:italic;
+    animation: fadeUp 0.35s ease 0.15s both;
+  }
+  .thought-bubble::before {
+    content:'你心里想：'; font-size:10px; color:#c8703a;
+    font-style:normal; font-weight:600; display:block; margin-bottom:3px;
+  }
+
+  /* 玩家选项区（底部固定） */
+  .options-panel {
+    position: fixed; bottom: 0; left:50%; transform:translateX(-50%);
+    width:100%; max-width:480px;
+    background: linear-gradient(to top, #0a0a10 75%, transparent);
+    padding: 20px 16px 24px;
+    z-index: 30;
+    transition: opacity 0.3s, transform 0.3s;
+
+  }
+  .options-panel.hidden { opacity:0; pointer-events:none; transform: translateY(12px); }
+  .options-list { display:flex; flex-direction:column; gap:7px; padding-bottom: 4px; }
+
+  .opt-btn {
+    background: rgba(18,18,26,0.97);
+    border: 1px solid #2a2a3a; border-radius:10px;
+    padding: 11px 14px; text-align:left; cursor:pointer;
+    transition: all 0.18s; position:relative; overflow:hidden;
+    animation: fadeUp 0.3s ease both;
+  }
+  .opt-btn:hover { border-color:#c8a96e; background:rgba(30,26,16,0.97); transform:translateX(4px); }
+  .opt-btn.locked { opacity:0.32; cursor:not-allowed; border-style:dashed; }
+  .opt-btn.locked:hover { transform:none; border-color:#2a2a3a; background:rgba(18,18,26,0.97); }
+  .opt-main { font-size:13px; color:#d0cec8; line-height:1.5; }
+  .opt-sub { font-size:11px; color:#6a6050; margin-top:3px; font-style:italic; }
+  .opt-lock { font-size:10px; color:#4a4848; margin-top:3px; }
+  .opt-unlock-tag {
+    position:absolute; top:7px; right:10px;
+    font-size:10px; padding:1px 6px; border-radius:3px;
+    background:#1e1208; color:#c8703a; border:1px solid #3a2010;
+  }
+
+  /* 玩家回话（选完后显示在流里） */
+  .player-msg-row {
+    display: flex; gap: 10px; align-items: flex-start;
+    justify-content: flex-end;
+    animation: fadeUp 0.3s ease;
+  }
+  .player-msg {
+    background: rgba(26,22,40,0.96);
+    border: 1px solid #3a3060; border-radius:12px 4px 12px 12px;
+    padding: 11px 14px; max-width:80%;
+    font-size:13px; color:#c8c0e0; line-height:1.6; font-style:italic;
+  }
+
+  /* NPC回应（结果） */
+  .npc-react-row {
+    display: flex; gap: 10px; align-items: flex-start;
+    animation: fadeUp 0.35s ease;
+  }
+  .npc-react {
+    background: rgba(22,22,32,0.96);
+    border: 1px solid #2a2a3a; border-radius:4px 12px 12px 12px;
+    padding: 14px 16px; flex: 1;
+  }
+  .npc-react-text { font-size:13px; line-height:1.85; color:#d0cec8; }
+  .npc-react-insight {
+    margin-top:8px; padding-top:8px; border-top:1px solid #1e1e2a;
+    font-size:11px; color:#6a6060; line-height:1.65; font-style:italic;
+  }
+  .delta-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .delta-chip {
+    font-size:10px; padding:2px 7px; border-radius:3px;
+    background:#0a180a; border:1px solid #1a2a1a; color:#6aaa6a;
+  }
+  .delta-chip.neg { background:#180a0a; border-color:#2a1a1a; color:#aa6a6a; }
+
+  /* 场景入场卡 */
+  .scene-card {
+    position:fixed; inset:0; background:rgba(5,5,10,0.97);
+    z-index:200; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:14px; padding:32px;
+    transition:opacity 0.5s;
+  }
+  .scene-card.out { opacity:0; pointer-events:none; }
+  .scene-date { font-size:12px; color:#6a6860; letter-spacing:2px; }
+  .scene-title { font-size:20px; font-weight:700; color:#f0ede6; text-align:center; letter-spacing:1px; }
+  .scene-sub { font-size:13px; color:#7a7060; text-align:center; line-height:1.8; max-width:280px; }
+  .scene-start {
+    margin-top:12px; padding:13px 36px;
+    background:linear-gradient(135deg,#c8a96e,#a88840);
+    border:none; border-radius:8px;
+    font-size:14px; font-weight:700; color:#0a0a10;
+    cursor:pointer; letter-spacing:1px; transition:opacity 0.2s;
+  }
+  .scene-start:hover { opacity:0.88; }
+
+  /* 结局卡 */
+  .ending-card {
+    position:fixed; inset:0; background:rgba(5,5,10,0.97);
+    z-index:200; display:none; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:14px; padding:32px;
+  }
+  .ending-card.show { display:flex; animation:fadeUp 0.5s ease; }
+  .ending-icon { font-size:44px; }
+  .ending-title { font-size:19px; font-weight:700; color:#f0ede6; text-align:center; }
+  .ending-desc { font-size:13px; color:#7a7060; text-align:center; line-height:1.85; max-width:280px; }
+  .ending-stats { display:flex; gap:16px; }
+  .e-stat {
+    text-align:center; background:#14141c; border:1px solid #2a2a3a;
+    border-radius:8px; padding:10px 18px;
+  }
+  .e-stat-val { font-size:24px; font-weight:700; color:#c8a96e; }
+  .e-stat-lbl { font-size:10px; color:#5a5858; margin-top:2px; }
+  .ending-restart {
+    margin-top:6px; padding:11px 28px;
+    background:#1a1a24; border:1px solid #3a3a45;
+    border-radius:8px; font-size:13px; color:#9a9890;
+    cursor:pointer; transition:all 0.2s;
+  }
+  .ending-restart:hover { border-color:#c8a96e; color:#c8a96e; }
+
+  /* Dev面板 */
+  .dev-panel {
+    position:fixed; top: 16px; right:16px;
+    background:rgba(10,10,20,0.93); border:1px solid #2a2a3a;
+    border-radius:10px; padding:10px 14px; z-index:100; min-width:155px;
+  }
+  .dev-label { font-size:10px; color:#5a5858; margin-bottom:6px; letter-spacing:1px; }
+  .dev-row { display:flex; align-items:center; gap:8px; }
+  .dev-btn {
+    width:24px; height:24px; border-radius:5px; border:1px solid #3a3a45;
+    background:#1a1a24; color:#9a9890; font-size:14px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; transition:all 0.15s;
+  }
+  .dev-btn:hover { border-color:#c8a96e; color:#c8a96e; }
+  .dev-val { font-size:16px; font-weight:700; color:#c8a96e; flex:1; text-align:center; }
+  .dev-tip { font-size:10px; color:#4a4848; margin-top:4px; line-height:1.4; }
+
+  /* 打字机光标 */
+  .cursor { display:inline-block; width:2px; height:14px; background:#c8a96e; margin-left:2px; vertical-align:middle; animation:blink 0.7s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<!-- 入场卡 -->
+<div class="scene-card" id="sceneCard">
+  <div class="scene-date">入职第 1 天 · 上午 10:22</div>
+  <div class="scene-title">直属 Leader 叫你过去了</div>
+  <div class="scene-sub">你刚把工位整理完，还没搞清楚打印机在哪里。<br>他在工位边等你，表情看不出来什么。</div>
+  <button class="scene-start" onclick="startGame()">▶ 开始对话</button>
+</div>
+
+<!-- 结局卡 -->
+<div class="ending-card" id="endingCard">
+  <div class="ending-icon" id="eIcon">💼</div>
+  <div class="ending-title" id="eTitle"></div>
+  <div class="ending-desc" id="eDesc"></div>
+  <div class="ending-stats">
+    <div class="e-stat"><div class="e-stat-val" id="eSocial">—</div><div class="e-stat-lbl">社会化程度</div></div>
+    <div class="e-stat"><div class="e-stat-val" id="eRelation">—</div><div class="e-stat-lbl">与Leader关系</div></div>
+  </div>
+  <button class="ending-restart" onclick="location.reload()">↺ 重新来过</button>
+</div>
+
+<div class="game-wrap">
+  <!-- 背景 -->
+  <div class="scene-bg">
+    <img src="../backgrounds/Clean_flat_illustration_style__2026-05-17T12-38-18.png" alt="">
+    <div class="scene-bg-fade"></div>
+  </div>
+
+  <!-- 状态栏 -->
+  <div class="status-bar">
+    <div class="day-info">入职 <b>第1天</b> · 上午</div>
+    <div class="social-meter">
+      <span class="social-label">社会化</span>
+      <div class="social-bar-wrap"><div class="social-bar" id="socialBar" style="width:30%"></div></div>
+      <span class="social-value" id="socialVal">30</span>
+    </div>
+  </div>
+
+  <!-- NPC立绘 -->
+  <div class="npc-area">
+    <img class="npc-portrait" id="npcPortrait"
+      src="../characters/Clean_flat_illustration_style__2026-05-17T12-25-10.png"
+      alt="Leader"
+      onerror="this.style.display='none'">
+  </div>
+
+  <!-- 对话流 -->
+  <div class="dialogue-stream" id="stream"></div>
+
+  <!-- 选项面板（底部固定） -->
+  <div class="options-panel hidden" id="optPanel">
+    <div class="options-list" id="optList"></div>
+  </div>
+</div>
+
+<!-- Dev面板 -->
+<div class="dev-panel">
+  <div class="dev-label">⚙ 社会化（Demo调节）</div>
+  <div class="dev-row">
+    <button class="dev-btn" onclick="setSocial(social-10)">−</button>
+    <div class="dev-val" id="devVal">30</div>
+    <button class="dev-btn" onclick="setSocial(social+10)">+</button>
+  </div>
+  <div class="dev-tip">调高解锁更多选项和内心注释</div>
+</div>
+
+<script>
+// ========== 状态 ==========
+let social = 30, relation = 50;
+let step = 0, busy = false;
+
+// ========== 剧本 ==========
+// 每步：npcText / thought(threshold,text) / options[]
+// 选项result：playerText / npcReact / insight / deltaLabels / social / relation
+// nextStep：根据选项id跳转（可分支），默认step+1
+const SCRIPT = [
+  {
+    npcText: '哦，你来了。坐吧。<br>我直接说——你是今年校招来的，我们组这半年比较忙，<span class="hl">你要做好心理准备。</span>',
+    thought: { threshold:40, text:'他一开口就给你打预防针。"比较忙"是什么意思？是真的忙，还是在暗示你会有大量加班？他"直接说"的姿态，是真的直接，还是一种掌控感的表现？' },
+    options: [
+      { id:'a', main:'没问题，我本来就做好了拼的准备。', sub:'展现积极态度',
+        result:{ playerText:'没问题，我本来就做好了拼的准备。', npcReact:'他点了点头，表情没有太大变化。「好。那就这样，先熟悉一下代码库。」', insight:'你给了他一个他期待的答案。关系稳了，但你什么信息也没套到。', social:2, relation:8, deltaLabels:['关系 +8','社会化 +2'] } },
+      { id:'b', main:'请问"比较忙"具体是什么量级？我想提前规划一下。', sub:'直接追问细节',
+        result:{ playerText:'请问"比较忙"具体是什么量级？', npcReact:'他停顿了一下，眼神有点微妙。「正常互联网节奏吧。你以后就知道了。」他没有正面回答你。', insight:'你套到了一个信息：他回避了这个问题。"正常互联网节奏"是经典的模糊答案——你开始知道什么问题不会有真实答案。', social:8, relation:-5, deltaLabels:['关系 -5','社会化 +8','线索：他回避了工作量问题'] } },
+      { id:'c', main:'我明白了。我会努力适应的。', sub:'保守回应',
+        result:{ playerText:'我明白了，会努力适应的。', npcReact:'「嗯。」他看了你一眼，转回屏幕。', insight:'你给了一个安全答案，什么风险也没冒，也什么都没收获。他对你的印象大概是：听话的新人。', social:0, relation:3, deltaLabels:['关系 +3'] } },
+      { id:'d', main:'陈哥，你之前带过的校招生后来都去哪了？', sub:null, lockThreshold:60, unlockTag:'社会化解锁',
+        result:{ playerText:'陈哥，你之前带过的校招生后来都去哪了？', npcReact:'他愣了一秒，然后笑了——是那种很少出现的真实的笑。<br>「留下来的没几个，但留下来的都还不错。」他停顿，「你这个问题……有点意思。」', insight:'你问了一个他没预期的问题——不是问工作量，是问他带的人最终走向哪里。他对你的看法变了，不只是听话的新人了。', social:15, relation:12, deltaLabels:['关系 +12','社会化 +15','解锁：Leader真实反应'] } },
+    ]
+  },
+  {
+    npcText: '对了，你之前实习做的是什么方向？<br><span class="hl">我看你简历上写了挺多项目，但都挺分散的。</span>',
+    thought: { threshold:45, text:'"但都挺分散的"——这是在质疑你的专注度，还是说你没有核心竞争力？他的语气是平的，你读不出好恶。' },
+    options: [
+      { id:'a', main:'是的，做过不同类型的项目，主要是想多积累经验。', sub:'如实解释',
+        result:{ playerText:'是的，做过不同类型的，主要想多积累经验。', npcReact:'「嗯，多看看也好。」他没有继续追问。', insight:'他接受了你的解释，但没有更多反应。这是一个安全的答案。', social:3, relation:2, deltaLabels:['关系 +2','社会化 +3'] } },
+      { id:'b', main:'我也在思考这个问题——来这边之前，我最想深耕的其实是……', sub:'引导他了解你的方向',
+        result:{ playerText:'我也在思考这个。来这边之前我想过，最想深耕的还是……', npcReact:'他抬起眼睛看了你一会儿。「说说看。」<br>你注意到他把手机翻转扣在桌上——他在认真听。', insight:'你把被动回答变成了主动表达。手机扣桌这个细节你记住了——这是他在认真听人说话时才会有的动作。', social:5, relation:10, deltaLabels:['关系 +10','社会化 +5','线索：手机扣桌=认真聆听'] } },
+      { id:'c', main:'您觉得分散是个问题吗？', sub:'把问题抛回给他',
+        result:{ playerText:'您觉得分散是个问题吗？', npcReact:'他有一点点没预期到你这么问。停了两秒。<br>「……看怎么理解了。你自己怎么看？」', insight:'你反问了他。他重新把球踢回来——你们开始真正在对话，不是单向汇报。但他的表情告诉你：他不太习惯被新人这样反问。', social:10, relation:-3, deltaLabels:['关系 -3','社会化 +10'] } },
+      { id:'d', main:'我知道简历这样写不太好看。但我是故意的——我想在大公司里找到真正的方向，而不是带着一个假设来验证它。', sub:null, lockThreshold:70, unlockTag:'社会化解锁',
+        result:{ playerText:'我知道简历这样写不太好看。但我是故意的——我想在大公司里找到真正的方向，而不是带着一个假设来验证它。', npcReact:'他放下了手里的杯子。<br>「……这是我今天听到的最诚实的答案。」<br>他看着你，表情变了，但你说不清楚变成了什么。', insight:'你说了一个高风险的真话。从他的反应来看——他记住你了。你开始理解：诚实在某些场合是一种非常有力的武器。', social:20, relation:18, deltaLabels:['关系 +18','社会化 +20','解锁：Leader记住了你'] } },
+    ]
+  },
+  {
+    npcText: '好了，差不多了。<br>你今天先熟悉环境，下周一开始跟版本。<br><span class="hl">有问题随时来找我。</span>',
+    thought: { threshold:50, text:'"有问题随时来找我"——是真的欢迎，还是客套话？他说这话的时候已经开始转向屏幕了，眼神不在你这里。这句话可能什么都不是，就是送客的方式。' },
+    options: [
+      { id:'a', main:'好的，谢谢陈哥！', sub:'礼貌道别',
+        result:{ playerText:'好的，谢谢陈哥！', npcReact:'「嗯。」他已经在看屏幕了。', insight:'一个完全正常的结束。没有什么特别的。', social:0, relation:2, deltaLabels:['关系 +2'] } },
+      { id:'b', main:'好的。我可以问一下，你一般什么时候比较方便被打扰？', sub:'问出他的工作节奏',
+        result:{ playerText:'好的。我可以问一下，你一般什么时候比较方便被打扰？', npcReact:'他停了一下，转过来看你。<br>「……下午三点以后比较好，上午我一般在赶东西。」<br>他顿了顿，「你问这个挺好。」', insight:'你问了一个大多数新人不会问的问题。你获得了实用信息，也让他对你产生好感——你在认真考虑怎么和他相处。', social:6, relation:8, deltaLabels:['关系 +8','社会化 +6','信息：下午3点后找他'] } },
+      { id:'c', main:'（什么都不说，点头离开）', sub:'沉默退出',
+        result:{ playerText:'（点了点头，转身离开）', npcReact:'你点了点头，走了。他没有抬头。', insight:'你没说废话。不是所有的结束都需要一句"谢谢陈哥"来填满。', social:3, relation:0, deltaLabels:['社会化 +3'] } },
+      { id:'d', main:'陈哥，你刚才说的"随时来找我"，是认真的吗？', sub:null, lockThreshold:65, unlockTag:'社会化解锁',
+        result:{ playerText:'陈哥，你刚才说的"随时来找我"，是认真的吗？', npcReact:'他真的愣了一下。然后笑了，这次是苦笑。<br>「……算认真吧。你来了我会接的。」<br>「你这个人挺有意思。」', insight:'你点破了一个所有人都心知肚明但没人会说的东西。他没有生气，反而觉得你有趣。有时候，直接说出那个"大家都知道但不说"的事情，反而是一种建立真实关系的方式。', social:18, relation:5, deltaLabels:['关系 +5','社会化 +18','解锁：第一个真实连接'] } },
+    ]
+  }
+];
+
+// ========== 工具 ==========
+function $(id){ return document.getElementById(id); }
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+function scrollBottom(){
+  const s = $('stream');
+  s.scrollTo({top:s.scrollHeight, behavior:'smooth'});
+}
+
+function updateSocialUI(){
+  $('socialBar').style.width = social+'%';
+  $('socialVal').textContent = social;
+  $('devVal').textContent = social;
+}
+
+// 打字机效果
+async function typeText(el, html, speed=22){
+  // 先解析html为纯文本+标签处理
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+  const full = temp.innerHTML;
+  el.innerHTML = '';
+  // 逐字符输出（简化：直接输出html片段）
+  const chars = [...full];
+  let buf = '';
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  el.appendChild(cursor);
+  for(let i=0;i<chars.length;i++){
+    buf += chars[i];
+    // 跳过html标签内部（避免乱序）
+    if(chars[i]==='<'){
+      let j=i+1;
+      while(j<chars.length && chars[j]!=='>') { buf+=chars[j]; j++; }
+      buf+='>'; i=j;
+    }
+    el.innerHTML = buf;
+    el.appendChild(cursor);
+    scrollBottom();
+    await sleep(speed);
+  }
+  cursor.remove();
+}
+
+// 追加元素到流
+function appendToStream(el, delay=0){
+  return new Promise(resolve=>{
+    setTimeout(()=>{
+      $('stream').appendChild(el);
+      scrollBottom();
+      resolve();
+    }, delay);
+  });
+}
+
+// ========== 游戏流程 ==========
+async function startGame(){
+  const card = $('sceneCard');
+  card.classList.add('out');
+  setTimeout(()=>card.style.display='none',500);
+  await sleep(600);
+  await runStep(0);
+}
+
+async function runStep(idx){
+  step = idx;
+  if(idx >= SCRIPT.length){ showEnding(); return; }
+  busy = true;
+  const scene = SCRIPT[idx];
+
+  // 隐藏选项面板
+  $('optPanel').classList.add('hidden');
+
+  // NPC立绘speaking动画
+  const portrait = $('npcPortrait');
+  portrait.classList.add('speaking');
+
+  // NPC消息框（带头像）
+  const msgEl = document.createElement('div');
+  msgEl.className = 'npc-msg';
+  const npcAvatar = document.createElement('img');
+  npcAvatar.className = 'avatar';
+  npcAvatar.src = '../characters/Clean_flat_illustration_style__2026-05-17T13-04-25.png';
+  npcAvatar.onerror = function(){ this.style.display='none'; };
+  const bubble = document.createElement('div');
+  bubble.className = 'npc-msg-bubble';
+  const nameEl = document.createElement('div');
+  nameEl.className = 'npc-msg-name';
+  nameEl.textContent = 'LEADER · 陈博';
+  const textEl = document.createElement('div');
+  textEl.className = 'npc-msg-text';
+  bubble.appendChild(nameEl);
+  bubble.appendChild(textEl);
+  msgEl.appendChild(npcAvatar);
+  msgEl.appendChild(bubble);
+  await appendToStream(msgEl);
+  await typeText(textEl, scene.npcText, 20);
+  portrait.classList.remove('speaking');
+
+  await sleep(300);
+
+  // 内心注释（如果社会化够）
+  if(social >= scene.thought.threshold){
+    const thoughtEl = document.createElement('div');
+    thoughtEl.className = 'thought-bubble';
+    thoughtEl.textContent = scene.thought.text;
+    await appendToStream(thoughtEl, 150);
+    await sleep(400);
+  }
+
+  await sleep(200);
+
+  // 展示选项
+  renderOptions(scene.options, idx);
+  busy = false;
+}
+
+function renderOptions(options, sceneIdx){
+  const list = $('optList');
+  list.innerHTML = '';
+  options.forEach((opt, i) => {
+    const isLocked = opt.lockThreshold && social < opt.lockThreshold;
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn' + (isLocked?' locked':'');
+    btn.style.animationDelay = (i*0.06)+'s';
+
+    let html = `<div class="opt-main">${opt.main}</div>`;
+    if(opt.sub) html += `<div class="opt-sub">${opt.sub}</div>`;
+    if(isLocked) html += `<div class="opt-lock">🔒 社会化需达到 ${opt.lockThreshold}</div>`;
+    if(opt.unlockTag && !isLocked) html += `<span class="opt-unlock-tag">${opt.unlockTag}</span>`;
+    btn.innerHTML = html;
+
+    if(!isLocked){
+      btn.onclick = () => pickOption(opt, sceneIdx);
+    }
+    list.appendChild(btn);
+  });
+
+  $('optPanel').classList.remove('hidden');
+
+  // 动态调整对话流底部，确保不被选项面板遮挡
+  requestAnimationFrame(() => {
+    const panelH = $('optPanel').offsetHeight;
+    $('stream').style.bottom = (panelH + 8) + 'px';
+    scrollBottom();
+  });
+}
+
+async function pickOption(opt, sceneIdx){
+  if(busy) return;
+  busy = true;
+
+  // 隐藏选项面板
+  $('optPanel').classList.add('hidden');
+
+  const r = opt.result;
+
+  // 玩家说话气泡（带头像，右侧）
+  const playerRow = document.createElement('div');
+  playerRow.className = 'player-msg-row';
+  const playerBubble = document.createElement('div');
+  playerBubble.className = 'player-msg';
+  playerBubble.textContent = r.playerText;
+  const playerAvatar = document.createElement('div');
+  playerAvatar.className = 'avatar-player';
+  playerAvatar.textContent = '我';
+  playerRow.appendChild(playerBubble);
+  playerRow.appendChild(playerAvatar);
+  await appendToStream(playerRow, 100);
+  await sleep(500);
+
+  // 更新数值
+  social = Math.max(0, Math.min(100, social + (r.social||0)));
+  relation = Math.max(0, Math.min(100, relation + (r.relation||0)));
+  updateSocialUI();
+
+  // NPC立绘
+  $('npcPortrait').classList.add('speaking');
+  await sleep(300);
+
+  // NPC回应（带头像）
+  const reactRow = document.createElement('div');
+  reactRow.className = 'npc-react-row';
+  const reactAvatar = document.createElement('img');
+  reactAvatar.className = 'avatar';
+  reactAvatar.src = '../characters/Clean_flat_illustration_style__2026-05-17T13-04-25.png';
+  reactAvatar.onerror = function(){ this.style.display='none'; };
+  const reactEl = document.createElement('div');
+  reactEl.className = 'npc-react';
+  const reactText = document.createElement('div');
+  reactText.className = 'npc-react-text';
+  reactEl.appendChild(reactText);
+  reactRow.appendChild(reactAvatar);
+  reactRow.appendChild(reactEl);
+  await appendToStream(reactRow);
+  await typeText(reactText, r.npcReact, 22);
+  $('npcPortrait').classList.remove('speaking');
+
+  // 内心解读
+  if(r.insight){
+    const insightEl = document.createElement('div');
+    insightEl.className = 'npc-react-insight';
+    insightEl.textContent = r.insight;
+    reactEl.appendChild(insightEl);
+    scrollBottom();
+    await sleep(300);
+  }
+
+  // 数值变化
+  if(r.deltaLabels && r.deltaLabels.length){
+    const deltaRow = document.createElement('div');
+    deltaRow.className = 'delta-row';
+    r.deltaLabels.forEach(d=>{
+      const chip = document.createElement('span');
+      const isNeg = d.includes('-');
+      chip.className = 'delta-chip'+(isNeg?' neg':'');
+      chip.textContent = d;
+      deltaRow.appendChild(chip);
+    });
+    reactEl.appendChild(deltaRow);
+    scrollBottom();
+  }
+
+  await sleep(800);
+  busy = false;
+
+  // 进入下一步
+  const nextIdx = sceneIdx + 1;
+  if(nextIdx < SCRIPT.length){
+    await runStep(nextIdx);
+  } else {
+    await sleep(400);
+    showEnding();
+  }
+}
+
+function showEnding(){
+  $('eSocial').textContent = social;
+  $('eRelation').textContent = relation;
+  let icon,title,desc;
+  if(relation>=80){ icon='🌟';title='意外的开始';desc='你让他记住你了。这在大厂不容易——大多数新人三个月之内都只是一个模糊的轮廓。'; }
+  else if(relation>=60){ icon='💼';title='还不错的开始';desc='他对你有一个基本正面的印象。你没有出错，你也摸到了一些什么。接下来的路还很长。'; }
+  else if(relation>=40){ icon='📋';title='普通的第一天';desc='你和他之间还是陌生人。这很正常——第一天本来就是观察，不是表演。'; }
+  else { icon='🌫';title='有点不顺的开始';desc='你踩了一些雷，但这不是终点。职场的关系可以修复，也可以绕开——你会慢慢学会的。'; }
+  $('eIcon').textContent = icon;
+  $('eTitle').textContent = title;
+  $('eDesc').textContent = desc;
+  $('endingCard').className = 'ending-card show';
+}
+
+function setSocial(val){
+  social = Math.max(0, Math.min(100, val));
+  updateSocialUI();
+  // 如果当前在选项阶段，刷新选项
+  if(!busy && step < SCRIPT.length){
+    renderOptions(SCRIPT[step].options, step);
+  }
+}
+
+updateSocialUI();
+</script>
+</body>
+</html>

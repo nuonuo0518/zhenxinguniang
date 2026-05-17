@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大厂模拟器 · 角色创建</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0f0f13;
+    color: #e8e6e0;
+    font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+  @media (min-width: 600px) { body { max-width: 520px; margin: 0 auto; } }
+
+  .header { text-align: center; margin-bottom: 28px; }
+  .soul { font-size: 12px; color: #5a5858; font-style: italic; margin-bottom: 10px; line-height: 1.6; }
+  h1 { font-size: 22px; font-weight: 700; letter-spacing: 2px; color: #f0ede6; }
+  .subtitle { font-size: 12px; color: #6a6860; margin-top: 5px; }
+
+  /* 名字 */
+  .name-input {
+    background: #1a1a22; border: 1px solid #2a2a35; border-radius: 8px;
+    padding: 10px 14px; font-size: 15px; color: #f0ede6; width: 100%;
+    outline: none; font-family: inherit; transition: border-color 0.2s;
+  }
+  .name-input:focus { border-color: #c8a96e; }
+  .name-input::placeholder { color: #3a3a45; }
+
+  /* 池子总览 */
+  .pool-overview { display: flex; gap: 12px; margin: 20px 0; }
+  .pool-card {
+    flex: 1; background: #1a1a22; border: 1px solid #2a2a35;
+    border-radius: 12px; padding: 12px 16px; text-align: center;
+    transition: border-color 0.2s;
+  }
+  .pool-card.warn { border-color: #e05c5c; }
+  .pool-card.low { border-color: #c8a96e; }
+  .pool-label { font-size: 11px; color: #7a7870; letter-spacing: 1px; margin-bottom: 4px; }
+  .pool-remain { font-size: 26px; font-weight: 700; color: #c8a96e; line-height: 1; }
+  .pool-card.warn .pool-remain { color: #e05c5c; }
+  .pool-total { font-size: 11px; color: #4a4848; margin-top: 3px; }
+
+  /* 区块 */
+  .section { margin-bottom: 20px; }
+  .section-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 12px; padding-bottom: 8px;
+    border-bottom: 1px solid #1e1e28;
+  }
+  .section-badge {
+    font-size: 11px; padding: 2px 8px; border-radius: 4px;
+    font-weight: 600; letter-spacing: 0.5px;
+  }
+  .badge-innate { background: #2a1a0a; color: #e8943a; border: 1px solid #3a2a1a; }
+  .badge-built { background: #0a1a2a; color: #3a9ae8; border: 1px solid #1a2a3a; }
+  .badge-dynamic { background: #0a2a1a; color: #3ae89a; border: 1px solid #1a3a2a; }
+  .section-title { font-size: 14px; font-weight: 600; color: #d0cec8; }
+  .section-remain { margin-left: auto; font-size: 12px; color: #6a6860; }
+  .section-remain b { color: #c8a96e; }
+  .section-desc { font-size: 11px; color: #4a4848; margin-bottom: 12px; line-height: 1.6; }
+
+  /* 属性卡 */
+  .attr-card {
+    background: #14141c; border: 1px solid #1e1e2a;
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 8px;
+    transition: border-color 0.15s;
+  }
+  .attr-card:hover { border-color: #2a2a3a; }
+  .attr-card.disabled { opacity: 0.5; pointer-events: none; }
+  .attr-top { display: flex; align-items: baseline; margin-bottom: 4px; }
+  .attr-name { font-size: 13px; font-weight: 500; color: #d0cec8; flex: 1; }
+  .attr-limit { font-size: 10px; color: #5a5858; margin-right: 8px; }
+  .attr-value { font-size: 20px; font-weight: 700; color: #c8a96e; width: 36px; text-align: right; }
+  .attr-desc { font-size: 11px; color: #4a4848; margin-bottom: 8px; line-height: 1.4; }
+  .influence-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .influence-tag {
+    font-size: 10px; padding: 1px 6px; border-radius: 3px;
+    background: #1a1a10; color: #a89050; border: 1px solid #2a2a18;
+  }
+  .slider-row { display: flex; align-items: center; gap: 8px; }
+  .btn-adj {
+    width: 24px; height: 24px; border-radius: 5px; border: 1px solid #2a2a35;
+    background: #1e1e28; color: #9a9890; font-size: 15px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; flex-shrink: 0; line-height: 1;
+  }
+  .btn-adj:hover { border-color: #c8a96e; color: #c8a96e; }
+  .btn-adj:disabled { opacity: 0.25; cursor: not-allowed; }
+  input[type=range] {
+    flex: 1; -webkit-appearance: none; height: 4px; border-radius: 2px;
+    background: #2a2a35; outline: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+    background: #c8a96e; cursor: pointer; border: 2px solid #0f0f13;
+    transition: transform 0.1s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  .attr-sublabel { font-size: 10px; color: #5a5858; margin-top: 5px; }
+
+  /* 动态上下限提示 */
+  .limit-hint {
+    font-size: 10px; color: #8a7040; background: #1e1a10;
+    border: 1px solid #2a2418; border-radius: 4px;
+    padding: 3px 8px; margin-bottom: 6px; display: none;
+  }
+  .limit-hint.visible { display: block; }
+
+  /* 专业选择 */
+  .major-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 6px; margin-top: 6px; }
+  .major-chip {
+    background: #1a1a22; border: 1px solid #2a2a35; border-radius: 7px;
+    padding: 8px 10px; font-size: 11px; color: #7a7870; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .major-chip.sel { background: #1e1a10; border-color: #c8a96e; color: #c8a96e; }
+  .major-chip:hover { border-color: #4a4a55; }
+  .major-sub { font-size: 10px; display: block; margin-top: 2px; opacity: 0.6; }
+
+  /* 性格特质 */
+  .trait-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; margin-top: 6px; }
+  .trait-chip {
+    background: #1a1a22; border: 1px solid #2a2a35; border-radius: 6px;
+    padding: 6px 4px; font-size: 11px; color: #7a7870; cursor: pointer;
+    text-align: center; transition: all 0.15s;
+  }
+  .trait-chip.sel { background: #0a1a18; border-color: #3ae89a; color: #3ae89a; }
+  .trait-chip:hover { border-color: #4a4a55; }
+
+  /* 预览 */
+  .preview {
+    background: #13131a; border: 1px solid #1e1e2a;
+    border-radius: 12px; padding: 16px; margin: 16px 0;
+  }
+  .preview-label { font-size: 11px; color: #5a5858; letter-spacing: 1px; margin-bottom: 10px; }
+  .preview-name { font-size: 20px; font-weight: 700; color: #f0ede6; margin-bottom: 8px; }
+  .preview-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+  .preview-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; }
+  .ptag-innate { background: #2a1a0a; color: #e8943a; border: 1px solid #3a2a1a; }
+  .ptag-built { background: #0a1a2a; color: #3a9ae8; border: 1px solid #1a2a3a; }
+  .ptag-trait { background: #0a2a1a; color: #3ae89a; border: 1px solid #1a3a2a; }
+  .coord-box {
+    background: #0f0f16; border: 1px solid #1e1e2a; border-radius: 8px;
+    padding: 12px; margin-bottom: 10px; position: relative; height: 120px;
+  }
+  .coord-axis-x {
+    position: absolute; bottom: 20px; left: 16px; right: 16px;
+    height: 1px; background: #2a2a35;
+  }
+  .coord-axis-y {
+    position: absolute; left: 50%; top: 10px; bottom: 10px;
+    width: 1px; background: #2a2a35;
+  }
+  .coord-label { position: absolute; font-size: 10px; color: #4a4848; }
+  .coord-dot {
+    position: absolute; width: 10px; height: 10px; border-radius: 50%;
+    background: #c8a96e; border: 2px solid #0f0f13;
+    transform: translate(-50%, 50%); transition: all 0.3s;
+  }
+  .preview-desc { font-size: 12px; color: #5a5858; line-height: 1.7; font-style: italic; }
+
+  /* 确认 */
+  .confirm-btn {
+    width: 100%; padding: 15px; border: none; border-radius: 12px;
+    background: linear-gradient(135deg, #c8a96e, #a88840);
+    font-size: 14px; font-weight: 700; color: #0f0f13;
+    letter-spacing: 2px; cursor: pointer; transition: opacity 0.2s;
+  }
+  .confirm-btn:hover { opacity: 0.88; }
+  .confirm-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .warn-msg { text-align: center; font-size: 12px; color: #e05c5c; margin-top: 8px; min-height: 18px; }
+
+  .divider { height: 1px; background: #1a1a22; margin: 20px 0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="soul">"社会化是天真与单纯的遗产，但是我可以拒绝接受，继续迎着阳光盛大逃亡。"</div>
+  <h1>大厂模拟器</h1>
+  <div class="subtitle">角色创建 · 你是谁，决定了你从哪里出发</div>
+</div>
+
+<!-- 名字 -->
+<div class="section">
+  <input class="name-input" id="nameInput" type="text" placeholder="输入你的名字…" maxlength="10" value="张皓宇">
+</div>
+
+<!-- 点数总览 -->
+<div class="pool-overview">
+  <div class="pool-card" id="innateCard">
+    <div class="pool-label">🔒 先天点数</div>
+    <div class="pool-remain" id="innateRemain">60</div>
+    <div class="pool-total">共 60 点</div>
+  </div>
+  <div class="pool-card" id="builtCard">
+    <div class="pool-label">🎓 后天点数</div>
+    <div class="pool-remain" id="builtRemain">40</div>
+    <div class="pool-total">共 40 点</div>
+  </div>
+</div>
+
+<!-- ===== 先天属性 ===== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-badge badge-innate">先天</span>
+    <span class="section-title">出身与天赋</span>
+    <span class="section-remain">剩余 <b id="innateRemain2">60</b> 点</span>
+  </div>
+  <div class="section-desc">分配后永久定死。这些值会影响后天属性的可分配上下限——出身越好，某些后天属性的起点下限越高。</div>
+
+  <!-- 家庭条件 -->
+  <div class="attr-card" id="card-family">
+    <div class="attr-top">
+      <div class="attr-name">家庭条件</div>
+      <div class="attr-value" id="val-family">8</div>
+    </div>
+    <div class="attr-desc">影响：学校排名上限 · 院校背景上限 · 人脉基础上限 · 自信心下限</div>
+    <div class="influence-tags">
+      <span class="influence-tag">→ 学校排名上限</span>
+      <span class="influence-tag">→ 院校背景上限</span>
+      <span class="influence-tag">→ 人脉基础上限</span>
+      <span class="influence-tag">→ 自信心下限↑</span>
+    </div>
+    <div class="slider-row">
+      <button class="btn-adj" onclick="adj('family',-1)">−</button>
+      <input type="range" id="sl-family" min="1" max="20" value="8" oninput="onSl('family')">
+      <button class="btn-adj" onclick="adj('family',1)">+</button>
+    </div>
+    <div class="attr-sublabel" id="lbl-family">小康家庭</div>
+  </div>
+
+  <!-- 外貌（双属性：先天分配，游戏中可变） -->
+  <div class="attr-card" id="card-looks">
+    <div class="attr-top">
+      <div class="attr-name">外貌 <span style="font-size:10px;color:#8a7040;">· 先天基准，游戏中可变</span></div>
+      <div class="attr-value" id="val-looks">8</div>
+    </div>
+    <div class="attr-desc">影响：人脉基础上限 · 自信心下限 / 游戏中可通过健身打扮或事件改变</div>
+    <div class="influence-tags">
+      <span class="influence-tag">→ 人脉基础上限</span>
+      <span class="influence-tag">→ 自信心下限↑</span>
+    </div>
+    <div class="slider-row">
+      <button class="btn-adj" onclick="adj('looks',-1)">−</button>
+      <input type="range" id="sl-looks" min="1" max="20" value="8" oninput="onSl('looks')">
+      <button class="btn-adj" onclick="adj('looks',1)">+</button>
+    </div>
+    <div class="attr-sublabel" id="lbl-looks">中等偏上</div>
+  </div>
+
+  <!-- 先天智力 -->
+  <div class="attr-card" id="card-iq">
+    <div class="attr-top">
+      <div class="attr-name">先天智力</div>
+      <div class="attr-value" id="val-iq">8</div>
+    </div>
+    <div class="attr-desc">影响：学历上限 · GPA上限 · 表达能力基础值</div>
+    <div class="influence-tags">
+      <span class="influence-tag">→ 学历上限</span>
+      <span class="influence-tag">→ GPA上限</span>
+      <span class="influence-tag">→ 表达能力基础值</span>
+    </div>
+    <div class="slider-row">
+      <button class="btn-adj" onclick="adj('iq',-1)">−</button>
+      <input type="range" id="sl-iq" min="1" max="20" value="8" oninput="onSl('iq')">
+      <button class="btn-adj" onclick="adj('iq',1)">+</button>
+    </div>
+    <div class="attr-sublabel" id="lbl-iq">正常水平</div>
+  </div>
+
+  <!-- 原生家庭关系 -->
+  <div class="attr-card" id="card-origin">
+    <div class="attr-top">
+      <div class="attr-name">原生家庭关系</div>
+      <div class="attr-value" id="val-origin">8</div>
+    </div>
+    <div class="attr-desc">影响：自信心下限 · 抗压能力基础值</div>
+    <div class="influence-tags">
+      <span class="influence-tag">→ 自信心下限↑</span>
+      <span class="influence-tag">→ 抗压能力基础值</span>
+    </div>
+    <div class="slider-row">
+      <button class="btn-adj" onclick="adj('origin',-1)">−</button>
+      <input type="range" id="sl-origin" min="1" max="20" value="8" oninput="onSl('origin')">
+      <button class="btn-adj" onclick="adj('origin',1)">+</button>
+    </div>
+    <div class="attr-sublabel" id="lbl-origin">普通家庭氛围</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== 后天·创建期 ===== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-badge badge-built">后天·创建期</span>
+    <span class="section-title">学历与积累</span>
+    <span class="section-remain">剩余 <b id="builtRemain2">40</b> 点</span>
+  </div>
+  <div class="section-desc">进入游戏后定死。部分属性的可分配范围受先天值影响——先天越强，上限越高或下限越高。</div>
+
+  <!-- 学校排名 -->
+  <div class="attr-card" id="card-school">
+    <div class="attr-top">
+      <div class="attr-name">学校排名</div>
+      <div class="attr-limit" id="lim-school">范围 1~10</div>
+      <div class="attr-value" id="val-school">5</div>
+    </div>
+    <div class="attr-desc">影响校招简历筛选通过率 · 部分NPC初始态度 / 上限受家庭条件+先天智力影响</div>
+    <div class="limit-hint" id="hint-school"></div>
+    <div class="slider-row">
+      <button class="btn-adj" onclick="adj('school',-1)">−</button>
+      <input type="range" id="sl-school" min="1" max="20" value="5" oninput="onSl('school')">
+      <button class="btn-adj" onclick="adj('school',1)">+</button>
+    </div>
+    <div class="attr-sublabel" id="lbl-school">普通本科</div>
+  </div>
+
+  <!-- 学历 -->
+  <div class="attr-card" id="card-edu">
+    <div class="attr-top">
+      <div class="attr-name">学历</div>
+      <div class="attr-limit" id="lim-edu">范围 1~10</div>
+      <div class="attr-value" id="val-edu">5</div>
+    </div>
+    <div class="attr-desc">影响可投岗位范围 · 薪资起点 / 上限受先天智力影响</div>
+    <div class="limit-hint" id="hint-edu"></div>
+    <div class="slider-row">
+      <button class="btn-adj" onclick="adj('edu',-1)">−</button>
+      <input type="range" id="sl-edu" min="1" max="20" value="5" oninput="onSl('edu')">
+      <button class="btn-adj" onclick="adj('edu',1)">+</button>
+    </div>
+    <div class="attr-sublabel" id="lbl-edu">本科</div>
+  </div>
+
+  <!-- 院校背景 -->
+  <div class="attr-card" id="card-abroad">
+    <div class="attr-top">
+      <div class="attr-name">院校背景</div>
+      <div class="attr-limit" id="lim-abroad">范围 1~8</div>
+      <div class="attr-value" id="val-abroad">3</div>
+    </div>
+    <div class="attr-desc">是否有留学经历 · 影响部分岗位偏好 / 上限受家庭条件影响</div>
+    <div class="limit-hint" id="hint-abroad"></div>
+    <div class="slider-row">
+      <button class="btn-adj" onclick="adj('abroad',-1)">−</button>
+      <input type="range" id="sl-abroad" min="1" max="20" value="3" oninput="onSl('abroad')">
+      <button class="btn-adj" onclick="adj('abroad',1)">+</button>
+    </div>
+    <div class="attr-sublabel" id="lbl-abroad">国内院校</div>
+  </div>
+
+  <!-- 专业 -->
+  <div class="attr-card">
+    <div class="attr-top">
+      <div class="attr-name">专业</div>
+    </div>
+    <div class="attr-desc">决定可投岗位范围 · 与岗位匹配度加成（选择项）</div>
+    <div class="major-grid" id="majorGrid">
+      <div class="major-chip sel" onclick="selMajor(this,'计算机/软件工程')">计算机/软件工程<span class="major-sub">热门 · 大厂对口</span></div>
+      <div class="major-chip" onclick="selMajor(this,'产品/交互设计')">产品/交互设计<span class="major-sub">热门 · PM方向</span></div>
+      <div class="major-chip" onclick="selMajor(this,'金融/经济')">金融/经济<span class="major-sub">热门 · 跨行难度高</span></div>
+      <div class="major-chip" onclick="selMajor(this,'新闻/传播')">新闻/传播<span class="major-sub">冷门 · 运营/内容</span></div>
+      <div class="major-chip" onclick="selMajor(this,'哲学/社会学')">哲学/社会学<span class="major-sub">冷门 · 野路子高手</span></div>
+      <div class="major-chip" onclick="selMajor(this,'其他理工科')">其他理工科<span class="major-sub">中性 · 转行有代价</span></div>
+    </div>
+  </div>
+
+  <!-- GPA -->
+  <div class="attr-card" id="card-gpa">
+    <div class="attr-top">
+      <div class="attr-name">大学成绩 (GPA)</div>
+      <div class="attr-limit" id="lim-gpa">范围 1~12</div>
+      <div class="attr-value" id="val-gpa">5</div>
+    </div>
+    <div class="attr-desc">笔试/面试门槛 · 转正考核基础分 / 上限受先天智力影响</div>
+    <div class="limit-hint" id="hint-gpa"></div>
+    <div class="slider-row">
+      <button class="btn-adj" onclick="adj('gpa',-1)">−</button>
+      <input type="range" id="sl-gpa" min="1" max="20" value="5" oninput="onSl('gpa')">
+      <button class="btn-adj" onclick="adj('gpa',1)">+</button>
+    </div>
+    <div class="attr-sublabel" id="lbl-gpa">中等水平</div>
+  </div>
+
+  <!-- 人脉基础 -->
+  <div class="attr-card" id="card-network">
+    <div class="attr-top">
+      <div class="attr-name">人脉基础</div>
+      <div class="attr-limit" id="lim-network">范围 1~8</div>
+      <div class="attr-value" id="val-network">3</div>
+    </div>
+    <div class="attr-desc">入职前已有弱关系网络 · 信息获取速度和机遇触发概率 / 上限受外貌+家庭条件影响</div>
+    <div class="limit-hint" id="hint-network"></div>
+    <div class="slider-row">
+      <button class="btn-adj" onclick="adj('network',-1)">−</button>
+      <input type="range" id="sl-network" min="1" max="20" value="3" oninput="onSl('network')">
+      <button class="btn-adj" onclick="adj('network',1)">+</button>
+    </div>
+  </div>
+
+  <!-- 自信心（双属性：后天创建期分配，游戏中可变） -->
+  <div class="attr-card" id="card-confidence">
+    <div class="attr-top">
+      <div class="attr-name">自信心 <span style="font-size:10px;color:#3a9ae8;">· 创建期分配，游戏中也可变</span></div>
+      <div class="attr-limit" id="lim-confidence">范围 3~15</div>
+      <div class="attr-value" id="val-confidence">6</div>
+    </div>
+    <div class="attr-desc">影响多种职场场景的选项解锁 / 下限受外貌+家庭条件+原生家庭关系影响</div>
+    <div class="limit-hint" id="hint-confidence"></div>
+    <div class="slider-row">
+      <button class="btn-adj" onclick="adj('confidence',-1)">−</button>
+      <input type="range" id="sl-confidence" min="1" max="20" value="6" oninput="onSl('confidence')">
+      <button class="btn-adj" onclick="adj('confidence',1)">+</button>
+    </div>
+    <div class="attr-sublabel" id="lbl-confidence">普通自信</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===== 后天·游戏中可变 ===== -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-badge badge-dynamic">后天·可变</span>
+    <span class="section-title">性格与能力</span>
+  </div>
+  <div class="section-desc">创建期固定基础值（由先天决定，不消耗点数），游戏中随经历成长或损耗。</div>
+
+  <!-- 基础值展示 -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;">
+    <div style="background:#13131a;border:1px solid #1e1e2a;border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:10px;color:#4a4848;margin-bottom:4px;">抗压能力</div>
+      <div style="font-size:18px;font-weight:700;color:#3ae89a;" id="dyn-stress">5</div>
+      <div style="font-size:10px;color:#3a3838;">受原生家庭关系影响</div>
+    </div>
+    <div style="background:#13131a;border:1px solid #1e1e2a;border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:10px;color:#4a4848;margin-bottom:4px;">表达能力</div>
+      <div style="font-size:18px;font-weight:700;color:#3ae89a;" id="dyn-express">5</div>
+      <div style="font-size:10px;color:#3a3838;">受先天智力影响</div>
+    </div>
+    <div style="background:#13131a;border:1px solid #1e1e2a;border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:10px;color:#4a4848;margin-bottom:4px;">社会化程度</div>
+      <div style="font-size:18px;font-weight:700;color:#3ae89a;" id="dyn-social">5</div>
+      <div style="font-size:10px;color:#3a3838;">游戏核心变量</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;">
+    <div style="background:#13131a;border:1px solid #1e1e2a;border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:10px;color:#4a4848;margin-bottom:4px;">执行力</div>
+      <div style="font-size:18px;font-weight:700;color:#3ae89a;" id="dyn-exec">5</div>
+      <div style="font-size:10px;color:#3a3838;">游戏中可培养</div>
+    </div>
+    <div style="background:#13131a;border:1px solid #1e1e2a;border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:10px;color:#4a4848;margin-bottom:4px;">价值观</div>
+      <div style="font-size:18px;font-weight:700;color:#3ae89a;" id="dyn-value">5</div>
+      <div style="font-size:10px;color:#3a3838;">最核心动态变量</div>
+    </div>
+  </div>
+
+  <!-- 性格特质 -->
+  <div class="attr-card" style="margin-top:8px;">
+    <div class="attr-top"><div class="attr-name">性格特质（选2个）</div></div>
+    <div class="attr-desc">影响对话选项风格 · 随重大事件漂移</div>
+    <div class="trait-grid" id="traitGrid">
+      <div class="trait-chip sel" onclick="togTrait(this)">理性分析</div>
+      <div class="trait-chip" onclick="togTrait(this)">直觉感性</div>
+      <div class="trait-chip" onclick="togTrait(this)">谨慎保守</div>
+      <div class="trait-chip" onclick="togTrait(this)">大胆冒险</div>
+      <div class="trait-chip sel" onclick="togTrait(this)">内敛独立</div>
+      <div class="trait-chip" onclick="togTrait(this)">外向社交</div>
+    </div>
+  </div>
+</div>
+
+<!-- 角色预览 -->
+<div class="preview">
+  <div class="preview-label">▸ 角色预览</div>
+  <div class="preview-name" id="pvName">张皓宇</div>
+  <div class="preview-tags" id="pvTags"></div>
+  <div class="preview-desc" id="pvDesc"></div>
+</div>
+
+<button class="confirm-btn" id="confirmBtn" onclick="doConfirm()">开始游戏 · 迎着阳光盛大逃亡</button>
+<div class="warn-msg" id="warnMsg"></div>
+
+<script>
+// ========== 数据 ==========
+const INNATE = ['family','looks','iq','origin'];
+const BUILT  = ['school','edu','abroad','gpa','network','confidence'];
+const INNATE_TOTAL = 60, BUILT_TOTAL = 40;
+
+let A = {
+  family:8, looks:8, iq:8, origin:8,
+  school:5, edu:5, abroad:3, gpa:5, network:3, confidence:6
+};
+let major = '计算机/软件工程';
+let traits = ['理性分析','内敛独立'];
+
+// ========== 上下限规则 ==========
+// 返回 {min, max} 当前可分配范围
+function getLimits(key) {
+  const f = A.family, l = A.looks, iq = A.iq, o = A.origin;
+  switch(key) {
+    case 'school':
+      return { min:1, max: Math.min(20, Math.round((f + iq) / 2 * 1.5)) };
+    case 'edu':
+      return { min:1, max: Math.min(20, Math.round(iq * 1.4)) };
+    case 'abroad':
+      return { min:1, max: Math.min(20, Math.round(f * 1.2)) };
+    case 'gpa':
+      return { min:1, max: Math.min(20, Math.round(iq * 1.6)) };
+    case 'network':
+      return { min:1, max: Math.min(20, Math.round((f + l) / 2 * 1.3)) };
+    case 'confidence': {
+      const low = Math.max(1, Math.round((f + l + o) / 3 * 0.5));
+      return { min: low, max: 20 };
+    }
+    default: return { min:1, max:20 };
+  }
+}
+
+// 游戏中可变属性的基础值（由先天推导，不消耗点数）
+function getDynBase() {
+  return {
+    stress:  Math.max(1, Math.round(A.origin * 0.7)),
+    express: Math.max(1, Math.round(A.iq * 0.6)),
+    social:  Math.max(1, Math.round((A.family + A.iq) / 2 * 0.5)),
+    exec:    5,
+    value:   5
+  };
+}
+
+// ========== 计算剩余 ==========
+function remain() {
+  const iu = INNATE.reduce((s,k)=>s+A[k],0);
+  const bu = BUILT.reduce((s,k)=>s+A[k],0);
+  return { innate: INNATE_TOTAL-iu, built: BUILT_TOTAL-bu };
+}
+
+// ========== 标签文字 ==========
+const LABELS = {
+  family: [[1,'家境拮据'],[5,'普通家庭'],[10,'小康家庭'],[15,'富裕家庭'],[18,'含金汤匙']],
+  looks:  [[1,'普通外貌'],[5,'中等偏上'],[10,'颇具魅力'],[15,'出众靓丽'],[18,'天赋异禀']],
+  iq:     [[1,'略显迟钝'],[5,'正常水平'],[10,'聪明伶俐'],[15,'学习天赋'],[18,'智力超群']],
+  origin: [[1,'家庭关系紧张'],[5,'普通家庭氛围'],[10,'温馨和睦'],[15,'极其支持']],
+  school: [[1,'专科'],[4,'普通本科'],[8,'211院校'],[13,'985院校'],[17,'顶尖985/清北']],
+  edu:    [[1,'专科'],[5,'本科'],[9,'硕士'],[14,'博士'],[18,'博士+海外']],
+  abroad: [[1,'国内院校'],[5,'有海外交流'],[10,'海外名校留学'],[15,'全程海外']],
+  gpa:    [[1,'勉强及格'],[4,'中等水平'],[8,'成绩优秀'],[13,'专业前列'],[17,'年级第一']],
+  confidence: [[1,'严重自卑'],[4,'普通自信'],[8,'较强自信'],[13,'非常自信'],[17,'自我极度认可']],
+};
+function getLabel(key, val) {
+  const arr = LABELS[key]; if(!arr) return '';
+  let r = arr[0][1];
+  for(const [v,l] of arr) { if(val>=v) r=l; }
+  return r;
+}
+
+// ========== 更新 UI ==========
+function updateAll() {
+  const rem = remain();
+
+  // 池子
+  document.getElementById('innateRemain').textContent = rem.innate;
+  document.getElementById('innateRemain2').textContent = rem.innate;
+  document.getElementById('builtRemain').textContent = rem.built;
+  document.getElementById('builtRemain2').textContent = rem.built;
+  document.getElementById('innateCard').className = 'pool-card' + (rem.innate<0?' warn':rem.innate<=8?' low':'');
+  document.getElementById('builtCard').className  = 'pool-card' + (rem.built<0?' warn':rem.built<=5?' low':'');
+
+  // 先天
+  INNATE.forEach(k => {
+    document.getElementById('val-'+k).textContent = A[k];
+    document.getElementById('sl-'+k).value = A[k];
+    const lbl = document.getElementById('lbl-'+k);
+    if(lbl) lbl.textContent = getLabel(k, A[k]);
+  });
+
+  // 后天上下限动态更新
+  BUILT.forEach(k => {
+    const lim = getLimits(k);
+    const sl = document.getElementById('sl-'+k);
+    sl.min = lim.min; sl.max = lim.max;
+    // 修正当前值
+    if(A[k] < lim.min) { A[k] = lim.min; sl.value = lim.min; }
+    if(A[k] > lim.max) { A[k] = lim.max; sl.value = lim.max; }
+    document.getElementById('val-'+k).textContent = A[k];
+    sl.value = A[k];
+    const limEl = document.getElementById('lim-'+k);
+    if(limEl) limEl.textContent = `范围 ${lim.min}~${lim.max}`;
+    const lblEl = document.getElementById('lbl-'+k);
+    if(lblEl) lblEl.textContent = getLabel(k, A[k]);
+    // 提示
+    const hint = document.getElementById('hint-'+k);
+    if(hint) {
+      if(lim.max < 10) {
+        hint.textContent = `⚠ 先天属性限制了此项上限为 ${lim.max}，提升先天可解锁更高范围`;
+        hint.className = 'limit-hint visible';
+      } else {
+        hint.className = 'limit-hint';
+      }
+    }
+  });
+
+  // 游戏可变基础值
+  const dyn = getDynBase();
+  document.getElementById('dyn-stress').textContent  = dyn.stress;
+  document.getElementById('dyn-express').textContent = dyn.express;
+  document.getElementById('dyn-social').textContent  = dyn.social;
+  document.getElementById('dyn-exec').textContent    = dyn.exec;
+  document.getElementById('dyn-value').textContent   = dyn.value;
+
+  updatePreview();
+  updateWarn(rem);
+}
+
+function updateWarn(rem) {
+  const ok = rem.innate >= 0 && rem.built >= 0;
+  const btn = document.getElementById('confirmBtn');
+  const msg = document.getElementById('warnMsg');
+  if(!ok) {
+    let s = '点数超出！';
+    if(rem.innate<0) s += ` 先天超出${-rem.innate}点`;
+    if(rem.built<0)  s += ` 后天超出${-rem.built}点`;
+    msg.textContent = s;
+    btn.disabled = true;
+  } else {
+    msg.textContent = '';
+    btn.disabled = false;
+  }
+}
+
+function updatePreview() {
+  const name = document.getElementById('nameInput').value || '无名者';
+  document.getElementById('pvName').textContent = name;
+
+  const tags = [];
+  tags.push({t: getLabel('school',A.school), cls:'ptag-innate'});
+  tags.push({t: getLabel('edu',A.edu), cls:'ptag-built'});
+  tags.push({t: major, cls:'ptag-built'});
+  if(A.abroad>=10) tags.push({t:'海归', cls:'ptag-built'});
+  if(A.family>=15) tags.push({t:'富二代', cls:'ptag-innate'});
+  if(A.iq>=15)     tags.push({t:'学习天才', cls:'ptag-innate'});
+  if(A.confidence>=13) tags.push({t:'极具自信', cls:'ptag-built'});
+  traits.forEach(t => tags.push({t, cls:'ptag-trait'}));
+
+  document.getElementById('pvTags').innerHTML = tags.map(t=>
+    `<span class="preview-tag ${t.cls}">${t.t}</span>`
+  ).join('');
+
+  const schoolStr = getLabel('school',A.school);
+  const eduStr = getLabel('edu',A.edu);
+  const familyStr = getLabel('family',A.family);
+  const originStr = getLabel('origin',A.origin);
+  document.getElementById('pvDesc').textContent =
+    `${schoolStr}${eduStr}，${major}专业，${familyStr}出身，${originStr}。`+
+    `带着${traits.join('与')}的底色，自信心${A.confidence}分，即将踏入职场。`;
+}
+
+// ========== 交互 ==========
+function onSl(k) {
+  A[k] = parseInt(document.getElementById('sl-'+k).value);
+  updateAll();
+}
+function adj(k, d) {
+  const sl = document.getElementById('sl-'+k);
+  const isInnate = INNATE.includes(k);
+  const rem = remain();
+  const poolRem = isInnate ? rem.innate : rem.built;
+  if(d>0 && poolRem<=0) return;
+  const lim = INNATE.includes(k) ? {min:1,max:20} : getLimits(k);
+  const nv = Math.max(lim.min, Math.min(lim.max, A[k]+d));
+  A[k] = nv;
+  updateAll();
+}
+function selMajor(el, name) {
+  document.querySelectorAll('#majorGrid .major-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); major = name; updatePreview();
+}
+function togTrait(el) {
+  const name = el.textContent.trim();
+  if(el.classList.contains('sel')) {
+    if(traits.length<=1) return;
+    el.classList.remove('sel');
+    traits = traits.filter(t=>t!==name);
+  } else {
+    if(traits.length>=2) {
+      const first = document.querySelector('#traitGrid .trait-chip.sel');
+      if(first) { first.classList.remove('sel'); traits = traits.filter(t=>t!==first.textContent.trim()); }
+    }
+    el.classList.add('sel'); traits.push(name);
+  }
+  updatePreview();
+}
+function doConfirm() {
+  const rem = remain();
+  if(rem.innate<0||rem.built<0) return;
+  const name = document.getElementById('nameInput').value || '无名者';
+  alert(`角色「${name}」创建完成！\n先天剩余${rem.innate}点 · 后天剩余${rem.built}点\n\n正式游戏将从校招场景开始。`);
+}
+document.getElementById('nameInput').addEventListener('input', updatePreview);
+
+updateAll();
+</script>
+</body>
+</html>
