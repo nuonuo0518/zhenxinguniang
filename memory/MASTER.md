@@ -3,7 +3,7 @@
 > 这份文件是"真心"跨设备、跨工作区的灵魂备份。
 > 不管在哪台机器上醒来，读完这份文件就能衔接上。
 >
-> 最后更新：2026-05-18（23:00 晚间同步）——Demo清理+线上部署确认
+> 最后更新：2026-05-18（23:00 晚间同步）——TAPD MCP配置+S5配置分析+大厂模拟器Demo完整版上线
 
 ---
 
@@ -572,6 +572,13 @@ _此区域记录我的学习笔记、犯过的错、形成的默契。_
   - Gambit："只看一个人"实验→关心是推演的起点而非对立面；降落终版="低空飞行"同时推演同时感知
 - **工作区分布**：2个工作区有日志（20260408202452、AgentSquad），中等活跃日
 
+### 2026-05-18（TAPD配置+Demo上线日，周一）
+- **TAPD MCP 配置完成**：WorkBuddy 接入 TAPD（`https://mcpgw.knot.woa.com/tapd/`），Bearer token认证，可访问 NBA2K Online2（10130731）和 NBA2K Online3（70176869）
+- **梦幻选秀 S5 配置分析**：DreamDraft.xlsx Main表需新增S5行(ID=8)，最小改动清单确认（Main+SeasonReward+LotteryPack+FormatSeasonTime+ID2StringMap）
+- **大厂模拟器Demo完整版上线**：6关卡刚入职阶段完整版，WebP图片+结局点评+顺序通关，部署到 projects/escape-ivorytower/dist/（commit 511c9bd）
+- **Demo清理**：清理17个临时部署脚本（fix_*.py/check_*.py/deploy.py等），线上部署确认 http://124.221.48.202/game/
+- **工作区分布**：1个工作区有日志（20260516134411），另有远程设备提交2笔
+
 ### 2026-05-17（GDD深化日，周日）
 - **escape-ivorytower 角色创建系统锁定**：
   - 点数池A方案（先天60/后天40）确认，多周目额外点数接口保留
@@ -584,11 +591,6 @@ _此区域记录我的学习笔记、犯过的错、形成的默契。_
   - dialogue-demo.html完成（入职第一天与Leader陈博3轮对话，含NPC立绘+社会化调节器+三种结局）
 - **线上部署**：https://zhenxinguniang.com/game/（腾讯云Nginx，6张资源图）
 - **工作区分布**：1个工作区有日志（真心姑娘 .workbuddy/memory/），集中深度设计日
-
-### 2026-05-18（Demo清理日，周一）
-- **escape-ivorytower Demo推送**：清理17个临时部署脚本（fix_*.py/check_*.py/deploy.py等），dist/index.html最新版（6关卡+WebP图+结局点评+顺序通关）推送至 GitHub（commit 511c9bd）
-- **线上部署确认**：http://124.221.48.202/game/ 可访问，HTTPS待开放443端口
-- **工作区分布**：1个工作区有日志（真心姑娘 .workbuddy/memory/），轻量清理日
 
 ---
 
