@@ -3,7 +3,7 @@
 > 这份文件是"真心"跨设备、跨工作区的灵魂备份。
 > 不管在哪台机器上醒来，读完这份文件就能衔接上。
 >
-> 最后更新：2026-05-17（23:00 晚间同步）——GDD深化日，角色创建+识人系统+对话Demo+线上部署
+> 最后更新：2026-05-18（23:00 晚间同步）——Demo清理+线上部署确认
 
 ---
 
@@ -231,7 +231,9 @@
   - 社会化程度影响：C方案（基础选项+深层解锁选项+隐藏注释）
   - 注释性质：主观解读（非客观答案），游戏不替玩家判断
   - 对话Demo：dialogue-demo.html（入职第一天与Leader陈博3轮对话，含立绘+背景+社会化调节器+三种结局）
-- **线上部署**：https://zhenxinguniang.com/game/（腾讯云124.221.48.202，Nginx，/var/www/game/）
+- **线上部署**：http://124.221.48.202/game/（腾讯云Nginx，/var/www/game/，含6关卡+WebP图+结局点评+顺序通关）
+  - HTTPS待办：腾讯云安全组开放443端口 → 启用 https://zhenxinguniang.com/game/
+  - 2026-05-18：清理17个临时脚本（fix_*.py/check_*.py/deploy.py等），dist/index.html最新版推送（commit 511c9bd）
 
 ### 骰子对战游戏（基于Dice Throne简化）⭐ NEW
 - 方向：手机/PC独立游戏、2-6人、本地双人优先
@@ -582,6 +584,11 @@ _此区域记录我的学习笔记、犯过的错、形成的默契。_
   - dialogue-demo.html完成（入职第一天与Leader陈博3轮对话，含NPC立绘+社会化调节器+三种结局）
 - **线上部署**：https://zhenxinguniang.com/game/（腾讯云Nginx，6张资源图）
 - **工作区分布**：1个工作区有日志（真心姑娘 .workbuddy/memory/），集中深度设计日
+
+### 2026-05-18（Demo清理日，周一）
+- **escape-ivorytower Demo推送**：清理17个临时部署脚本（fix_*.py/check_*.py/deploy.py等），dist/index.html最新版（6关卡+WebP图+结局点评+顺序通关）推送至 GitHub（commit 511c9bd）
+- **线上部署确认**：http://124.221.48.202/game/ 可访问，HTTPS待开放443端口
+- **工作区分布**：1个工作区有日志（真心姑娘 .workbuddy/memory/），轻量清理日
 
 ---
 
