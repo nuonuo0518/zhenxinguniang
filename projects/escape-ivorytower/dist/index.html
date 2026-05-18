@@ -182,7 +182,7 @@
   <div class="options-panel hidden" id="optPanel"><div class="options-list" id="optList"></div></div>
   <button class="next-guide-btn" id="nextGuideBtn" onclick="showEnding()">
     <div class="next-guide-dot"></div>
-    查看本关总结
+    进入下一阶段
   </button>
 </div>
 
@@ -542,23 +542,17 @@ function showEnding(){
   else{icon='🌫';title='有点不顺的交流';desc='你踩了一些雷，但没关系。这个游戏可以重来，真实职场也有机会修复。';}
   $('eIcon').textContent=icon;$('eTitle').textContent=title;$('eDesc').textContent=desc;
 
-  // 渲染选择回顾
+  // 渲染本关点评（一句话）
   const reviewEl = $('endingReview');
-  if(choiceLog.length > 0){
-    let html = '<div class="ending-review-title">▸ 你这一关的选择</div>';
-    choiceLog.forEach((log, i) => {
-      const deltasHtml = log.deltas.map(d =>
-        `<span class="review-delta${d.includes('-')?' neg':''}">${d}</span>`
-      ).join('');
-      html += `<div class="review-item">
-        <div class="review-choice">${log.choice}</div>
-        ${deltasHtml ? `<div class="review-deltas">${deltasHtml}</div>` : ''}
-      </div>`;
-    });
-    reviewEl.innerHTML = html;
-  } else {
-    reviewEl.innerHTML = '';
-  }
+  const totalS = social - 30; // 本关社会化净增
+  let comment = '';
+  if(relation >= 70 && totalS >= 15) comment = '你既读懂了对方，也让对方看见了你。这种双向的清醒，很少见。';
+  else if(relation >= 70) comment = '你赢得了对方的好感，但你自己收获了多少，值得想一想。';
+  else if(totalS >= 15 && relation < 50) comment = '你读懂了很多，但好像有点太透明了——职场里，有些事看穿了不一定要说出来。';
+  else if(totalS >= 10) comment = '你在学着读人，有些地方已经开始摸到感觉了。';
+  else if(relation >= 50) comment = '你让这段关系平稳落地，但你自己的收获还不够多。';
+  else comment = '这次对话没有太多波澜。没关系——观察本身也是一种积累。';
+  reviewEl.innerHTML = `<div style="background:#14141c;border:1px solid #1e1e2a;border-radius:8px;padding:12px 14px;text-align:left;font-size:13px;color:#a0a8b0;line-height:1.8;font-style:italic;">${comment}</div>`;
 
   // 最后一关时隐藏下一关按钮
   const nextBtn = $('nextLevelBtn');
