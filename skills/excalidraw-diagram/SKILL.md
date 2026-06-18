@@ -1,5 +1,5 @@
 ---
-name: 手绘示意图
+name: excalidraw-diagram
 description: 使用 excalidraw-cli 和 @moona3k/excalidraw-export 绘制手绘风格示意图并导出为 SVG。当用户要求绘制线框图、界面流转图、架构图、流程图，或提到 excalidraw、手绘风格图、wireframe、示意图时，主动使用此 skill。也适用于需要将已有 .excalidraw 文件转为 SVG 的场景。
 ---
 

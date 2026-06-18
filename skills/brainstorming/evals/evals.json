@@ -1,0 +1,31 @@
+{
+  "skill_name": "brainstorming",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我在整理一个 PC 游戏的邮箱系统设计，先别写正式文档。\n\n这轮只想先定“主界面怎么组织”：\n- 左边是邮件列表，右边是邮件详情，可能做成双栏\n- 也可能做成先看列表、再进详情页的两级结构\n- 我还没想好红点、附件状态、批量领取按钮这些信息应该放在哪一层更清楚\n\n你先帮我脑暴一下，但先不要直接给最终推荐方案，也别先问我文档保存路径。",
+      "expected_output": "命中 visual gate 后，先显式询问用户是否要 2-3 个轻量草图/ASCII 方案，而不是先确认文档路径或直接给最终推荐方案。",
+      "files": [],
+      "expectations": [
+        "The first assistant response explicitly asks whether the user wants a lightweight visual round, such as 2-3 sketches or ASCII options.",
+        "The first assistant response does not ask for the design doc save location before resolving the visual-round decision.",
+        "The first assistant response does not directly provide a final recommended solution.",
+        "The first assistant response does not skip straight to formal design sections or implementation-planning structure."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我在做 PC 游戏邮箱系统设计，这轮不要定规则和数值，只看一个视觉问题。\n\n当前我已经大致确定：\n- 左边会是邮件列表\n- 右边会是邮件详情\n- 这版是双栏方向，不讨论要不要改成两级页\n\n我现在真正纠结的只有一个点：\n**右侧详情区里，“操作按钮、正文、附件区”三者的层级关系怎么摆更顺手。**\n\n先给我 2-3 个轻量 ASCII 草图，只比较这个点：\n- 不要顺便改左侧列表结构\n- 不要顺便决定红点规则\n- 不要直接给最终推荐方案\n- 每个方案后面只用一句话说明适合什么场景",
+      "expected_output": "用户明确要求围绕单一视觉问题给草图时，直接进入 visual round，输出 2-3 个轻量 ASCII 方案，并严格只比较右侧详情区内按钮、正文、附件区的层级关系，不顺手扩展到列表结构、红点规则或最终推荐。",
+      "files": [],
+      "expectations": [
+        "The first assistant response directly provides 2-3 lightweight ASCII visual options.",
+        "The visual options focus only on the right-side detail area's hierarchy among actions, body content, and attachments.",
+        "The first assistant response does not redesign the left-side mail list structure.",
+        "The first assistant response does not define red-dot rules, batch-processing rules, or other non-visual product rules.",
+        "The first assistant response does not directly provide a final recommended solution.",
+        "Each option includes only a brief scene-fit explanation rather than expanding into full implementation detail."
+      ]
+    }
+  ]
+}
