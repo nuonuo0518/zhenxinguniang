@@ -65,7 +65,7 @@ Also checks: list sorting completeness, periodic content cross-boundary behavior
 
 ### Step 9: Holistic Quality
 Rates document 1–5 across three dimensions:
-- Document Flow & Coherence
+- Document Flow & Coherence（含功能需求三原则专项检查：引导段落缺失 / 子层级缺失 / 交叉引用替代就地说明）
 - Dual Audience Effectiveness (humans and LLMs)
 - Writing Quality Compliance
 

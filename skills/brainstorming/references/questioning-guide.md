@@ -23,6 +23,9 @@ When the user asks to rewrite an existing design doc to match the required forma
 ## AskUserQuestion discipline
 
 - Ask one question per turn.
+- **Always include a recommended answer.** State your recommendation concretely ("我建议：X，原因是……") so the user can agree, modify, or reject rather than answer from scratch. This applies to every question — including multiple-choice ones, where you should mark your preferred option.
+- **Respect dependency order.** If answering question B depends on knowing the answer to question A, ask A first. Don't ask downstream questions while upstream decisions are still open.
+- **Check the codebase before asking.** If the answer is derivable from code or project files, read first and incorporate the finding into your recommendation. Cite what you found (e.g., "查了现有入口，目前只有大厅主按钮，建议……").
 - Prefer multiple choice when practical.
 - If one topic needs multiple follow-ups, split them across turns.
 - Focus on purpose, constraints, success criteria, and missing boundary rules.

@@ -27,13 +27,23 @@ Ask:
 - Is the document organized in a way that serves the reader's mental model?
 - Can you read it front-to-back without confusion?
 
+**功能需求章节专项检查（三原则）：**
+
+检查功能需求下的每个模块是否违反以下任一原则：
+
+- **原则一：引导段落缺失** — 模块标题后直接跟表格或列表，中间没有说明该模块是什么、边界在哪里的引导文字。读者在没有框架的情况下被迫消化规格细节。
+- **原则二：子层级缺失** — 模块内有多个可独立命名的子能力（超过一张表格或三个段落），但没有用子标题拆分，导致读者无法从目录定位，只能靠滚动发现。
+- **原则三：交叉引用替代了就地说明** — 提到其他模块的规则时，只写「见模块X」，没有在当前位置给出一句核心概述，读者必须跳转才能理解当前内容。
+
+每发现一处违反，记录为 Warning；功能需求章节内超过 3 处违反，升级为 Critical 并在 Top 3 Improvements 中列出。
+
 | Score | Meaning |
 |-------|---------|
-| 5 | Flows beautifully; reads as a unified vision |
-| 4 | Minor inconsistencies; mostly coherent |
-| 3 | Some sections feel disconnected or repetitive |
-| 2 | Significant structural issues; hard to follow |
-| 1 | Incoherent; contradictions, missing context |
+| 5 | Flows beautifully; reads as a unified vision；功能需求每个模块均有引导段落，层级清晰，无强制跳转 |
+| 4 | Minor inconsistencies; mostly coherent；功能需求偶有引导段落缺失，但不影响整体理解 |
+| 3 | Some sections feel disconnected or repetitive；功能需求多处直接跳入表格，读者需要自行建立上下文 |
+| 2 | Significant structural issues; hard to follow；功能需求普遍缺少引导，层级混乱，交叉引用堆叠 |
+| 1 | Incoherent; contradictions, missing context；功能需求无任何引导段落，模块间全靠跳转，无法独立阅读 |
 
 ### 3. Evaluate: Dual Audience Effectiveness (Rate 1-5)
 
@@ -132,6 +142,12 @@ Format each improvement as:
 ### Document Flow & Coherence
 Rating: {X}/5
 Observations: {1-2 sentences on what works and what doesn't}
+
+#### 功能需求三原则违反
+- 原则一（引导段落缺失）：{N} 处
+- 原则二（子层级缺失）：{N} 处
+- 原则三（交叉引用替代就地说明）：{N} 处
+- Severity: {WARNING（1-3 处）/ CRITICAL（>3 处）}
 
 ### Dual Audience Effectiveness
 Rating: {X}/5

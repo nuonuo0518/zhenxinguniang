@@ -1,5 +1,5 @@
 ---
-name: 设计文档审查
+name: validate-prd
 description: >
   Validates an existing game project PRD or GDD for production readiness. Runs a comprehensive
   10-step review covering information density, clarity & ambiguity, traceability, implementation

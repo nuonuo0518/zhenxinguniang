@@ -5,3 +5,6 @@
 # 安装包/临时文件
 CodeBuddy CN/
 git_pull_output.txt
+
+# 大型项目（应有独立仓库）
+角色产品/

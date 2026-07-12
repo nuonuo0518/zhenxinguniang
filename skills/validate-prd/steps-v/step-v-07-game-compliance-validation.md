@@ -79,6 +79,13 @@ Flag these common game document anti-patterns (see `data/game-requirements.md` f
 
 **输出**：列出每个被检查的列表模块及其判定结果。
 
+### 5.5. Multi-Tab/Option Default Selection Check
+扫描文档中所有描述多页签（Tab）或多选项切换的界面，检查是否定义了默认选中项。
+**判定规则**：
+- 明确说明了默认选中项（如"默认选中每日任务"）→ Pass
+- 有多页签/选项但未说明默认选中项，或默认选中规则存在歧义（如受红点影响未明确说明） → Warning
+**输出**：列出每个多页签模块及其判定结果。
+
 ### 6. Periodic Content Cross-Boundary Behavior Check
 
 扫描文档中所有含更新周期的内容（日任务、周任务、限时活动、版本内容等），检查是否定义了跨周期边界的完整行为。
@@ -168,6 +175,11 @@ Flag these common game document anti-patterns (see `data/game-requirements.md` f
 - ...
 - 判定：{PASS / WARNING}
 
+**Multi-Tab Default Selection:**
+- {模块名}：{✓ 默认选中已明确 | ⚠ 未明确默认选中}
+- ...
+- 判定：{PASS / WARNING}
+
 **Periodic Content Cross-Boundary Behavior:**
 - {模块名}：{✓ 跨周期行为已定义 | ⚠ 未定义跨周期行为}
 - ...
@@ -193,6 +205,7 @@ Flag these common game document anti-patterns (see `data/game-requirements.md` f
 - ✓ Present sections evaluated for quality
 - ✓ Game-specific anti-patterns identified
 - ✓ List sorting completeness checked
+- ✓ Multi-tab default selection checked
 - ✓ Periodic content cross-boundary behavior checked
 - ✓ Reward/item display hover interaction checked
 - ✓ Internal consistency checked

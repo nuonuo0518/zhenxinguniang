@@ -7,6 +7,7 @@ description: >
   requirements, options, trade-offs, before coding, before implementation.
   Do NOT trigger on direct requests to build/code/fix/modify behavior
   immediately, or on implementation of an already approved spec/plan.
+disable-model-invocation: true
 ---
 
 # Brainstorming Ideas Into Designs
@@ -72,6 +73,7 @@ These rules apply throughout the session and do not relax as the conversation gr
 
 - One failed attempt does not justify switching tools; narrow scope and retry once first.
 - Do not skip from brainstorming into implementation because a search/read step felt slow.
+- When falling back to an alternative tool, annotate the reason: `⚠️ 降级: [原因]`
 
 ## Output Constraints（输出约束）
 Do not output:
@@ -162,6 +164,11 @@ digraph brainstorming {
 
 - Start from current project context, not from assumptions.
 - Ask clarifying questions with `AskUserQuestion`, one per turn.
+- **Before presenting any design, do a systematic sweep of all open parameters** — enumerate every unknown that affects the design, then classify each into one of three buckets:
+  - **(A) User-decidable now**: a product/design call the person in this conversation can answer (e.g. default values, behavior choices, scope inclusion). → **Must ask before writing the spec.**
+  - **(B) External team dependency**: appears to require another team's input (UI design file, server implementation, IDIP scheduling).
+  - **(C) Implementation detail**: appears to be an engineering decision that doesn't change the design intent (e.g. UUID vs auto-increment ID).
+  For (B) and (C) items: **do not silently defer them — surface them to the user first**. Ask whether the user wants to decide them now or defer. Only move them to `待讨论事项` after the user confirms they want to defer. The user may have an answer ready, or may disagree with your classification.
 - If the request spans multiple low-coupling subsystems or phases, narrow this round to one slice before going deeper.
 - If the user asks to rewrite an existing design doc, or if entrance/game-system/doc-trap signals appear, read `references/questioning-guide.md` and apply only the relevant probes.
 - If the direction feels vague or the solution space is large, use 1-2 techniques from `references/techniques.md`.
@@ -184,7 +191,7 @@ Do not redefine document sections in `SKILL.md`. If you need exact structure, re
 - Write the validated design draft to the path confirmed with the user in step 4 of the Checklist
 - Read `references/design-doc-template.md` and follow its structure when writing the design doc.
 - If visual草稿帮助过收敛方案，可在文档中引用其结论，但不要让临时视觉工件替代 Markdown 设计文档本身。
-- Before showing the written spec to the user, run a self-review pass and fix issues inline. At minimum, check for: placeholders/TODO/TBD, contradictions, ambiguous requirements, unrequested scope expansion, and whether the spec is still small enough to feed into a single implementation plan.
+- Before showing the written spec to the user, run a self-review pass and fix issues inline. At minimum, check for: placeholders/TODO/TBD, contradictions, ambiguous requirements, unrequested scope expansion, whether the spec is still small enough to feed into a single implementation plan, **and whether any `待讨论事项` entries were never surfaced to the user for confirmation — if so, go back and ask before finalizing**.
 - Show the final written Markdown doc to the user and explicitly ask whether it accurately reflects the design already approved in conversation. Presentation approval is NOT enough; the written spec needs its own confirmation gate.
 - Only after the user approves the written spec, commit the design document to git
 

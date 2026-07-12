@@ -89,6 +89,9 @@ Follow this guide during brainstorming execution. Do not skip steps.
 
 ## Step 5: Ask clarifying questions
 - Ask one `AskUserQuestion` per turn.
+- **For every question, include your recommended answer.** State it as a concrete recommendation (e.g., "我建议：独立页面，原因是……"), not a hedge. The user can agree, modify, or reject — but they should never face a blank question.
+- **Respect dependency order.** Upstream decisions must be confirmed before asking downstream questions that depend on them. If a question's answer changes depending on something still unresolved, hold that question until the upstream decision is settled.
+- **Check the codebase before asking.** If the answer can be derived from reading code or project files (e.g., existing entry points, current data structures, related systems), read first and cite what you found in your recommendation. Do not ask the user something you can look up yourself.
 - Resolve purpose, constraints, success criteria, and any still-open boundary questions.
 - If Step 3 was deferred, use this step to gather the minimum decision context, then revisit Step 3 before proposing approaches.
 - Load `references/questioning-guide.md` when rewriting an existing doc or when entrance/game-system/trap/UI-presence signals appear.
